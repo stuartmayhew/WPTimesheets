@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Timesheets.Helpers
 {
@@ -43,6 +44,14 @@ namespace Timesheets.Helpers
 
             return convert;
         }
+
+        private static void KillQuickbooks()
+        {
+            Process[] proc = Process.GetProcessesByName("QBW32");
+            if (proc.Count() > 0)
+                proc[0].Kill();
+        }
+
     }
 }
  
