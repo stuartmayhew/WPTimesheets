@@ -21,7 +21,10 @@ namespace Timesheets
 
         private void fmMain_Load(object sender, EventArgs e)
         {
-
+            fmSplash splash = new fmSplash();
+            splash.Show();
+            System.Threading.Thread.Sleep(5000);
+            splash.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
