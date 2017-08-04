@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Timesheets.Helpers
 {
@@ -17,6 +18,40 @@ namespace Timesheets.Helpers
         {
             string tsString = " {ts '" + date.ToString("yyyy-MM-dd") + " 00:00:00.000'}";
             return tsString;
+        }
+
+        internal static DateTime GetWeekEnding(DateTime selDate)
+        {
+            DateTime endOfWeek;
+            int thisWeekNumber = GetIso8601WeekOfYear(selDate);
+            DateTime firstDayOfWeek = FirstDateOfWeek(selDate.Year, thisWeekNumber, CultureInfo.CurrentCulture);
+            endOfWeek = firstDayOfWeek.AddDays(7);
+            return endOfWeek;
+
+        }
+
+        public static int GetIso8601WeekOfYear(DateTime time)
+        {
+            DayOfWeek day = CultureInfo.CurrentCulture.Calendar.GetDayOfWeek(time);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+            {
+                time = time.AddDays(3);
+            }
+
+            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
+        public static DateTime FirstDateOfWeek(int year, int weekOfYear, System.Globalization.CultureInfo ci)
+        {
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysOffset = (int)ci.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
+            DateTime firstWeekDay = jan1.AddDays(daysOffset);
+            int firstWeek = ci.Calendar.GetWeekOfYear(jan1, ci.DateTimeFormat.CalendarWeekRule, ci.DateTimeFormat.FirstDayOfWeek);
+            if ((firstWeek <= 1 || firstWeek >= 52) && daysOffset >= -3)
+            {
+                weekOfYear -= 1;
+            }
+            return firstWeekDay.AddDays(weekOfYear * 7);
         }
 
         public static string DateString(DateTime date)
@@ -45,7 +80,7 @@ namespace Timesheets.Helpers
             return convert;
         }
 
-        private static void KillQuickbooks()
+        public static void KillQuickbooks()
         {
             Process[] proc = Process.GetProcessesByName("QBW32");
             if (proc.Count() > 0)

@@ -66,22 +66,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmLogin.Designer.cs">
+      <DependentUpon>fmLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="fmMain.Designer.cs">
       <DependentUpon>fmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmSplash.Designer.cs">
+      <DependentUpon>fmSplash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\clsDataGetter.cs" />
     <Compile Include="Helpers\clsOdbcDataGetter.cs" />
     <Compile Include="Helpers\CommonProcs.cs" />
+    <Compile Include="Helpers\MyConfig.cs" />
     <Compile Include="Helpers\ODBCModelReader.cs" />
     <Compile Include="Helpers\QBDataPump.cs" />
     <Compile Include="Helpers\ModelReader.cs" />
+    <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Clss.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PayrollItem.cs" />
     <Compile Include="Models\QBModels\QBAccount.cs" />
     <Compile Include="Models\QBModels\QBCustomer.cs" />
@@ -90,8 +105,14 @@
     <Compile Include="Models\QBModels\QBClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fmLogin.resx">
+      <DependentUpon>fmLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmMain.resx">
       <DependentUpon>fmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmSplash.resx">
+      <DependentUpon>fmSplash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -126,6 +147,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="w_power.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

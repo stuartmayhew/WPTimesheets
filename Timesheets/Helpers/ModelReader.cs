@@ -59,6 +59,9 @@ namespace Timesheets.Helpers
                     NotMapped.Add(prop.Name);
                 }
 
+                if (reader == null || reader.HasRows == false)
+                    return default(T);
+
                 while (reader.Read())
                 {
                     var item = Activator.CreateInstance<T>();
