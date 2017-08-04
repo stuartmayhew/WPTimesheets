@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fmMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.setupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setupFacilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setupAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.Company = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cbCompany = new System.Windows.Forms.ComboBox();
@@ -57,42 +59,54 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cbPayrollItem = new System.Windows.Forms.ComboBox();
             this.cbClassEquip = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dtpDateWorked = new System.Windows.Forms.DateTimePicker();
             this.cbCustomer = new System.Windows.Forms.ComboBox();
             this.cbEmployee = new System.Windows.Forms.ComboBox();
             this.tbTabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Customer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ClassEquipment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PayrollItem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Day = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RegHours = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OTHours = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lblStatus = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ssProg = new System.Windows.Forms.ToolStripProgressBar();
             this.ssLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssProg = new System.Windows.Forms.ToolStripProgressBar();
+            this.gvTimesheet = new System.Windows.Forms.DataGridView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.quickbooksDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshCustomersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshPayrollItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddNote = new System.Windows.Forms.Button();
+            this.custNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.oTHoursDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.regHoursDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.notesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.approvedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.vwTimelineItemsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.wPCompanyDataSet = new Timesheets.WPCompanyDataSet();
+            this.vw_TimelineItemsTableAdapter = new Timesheets.WPCompanyDataSetTableAdapters.vw_TimelineItemsTableAdapter();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gbWorkDays.SuspendLayout();
             this.tbTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwTimelineItemsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wPCompanyDataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setupToolStripMenuItem});
+            this.setupToolStripMenuItem,
+            this.quickbooksDataToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1492, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1614, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -131,10 +145,20 @@
             this.panel1.Controls.Add(this.dtpWeekEnding);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1492, 81);
+            this.panel1.Size = new System.Drawing.Size(1614, 81);
             this.panel1.TabIndex = 1;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblStatus.Location = new System.Drawing.Point(20, 4);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 20);
+            this.lblStatus.TabIndex = 8;
             // 
             // Company
             // 
@@ -163,7 +187,7 @@
             "Non-Union",
             "Union"});
             this.cbCompany.Location = new System.Drawing.Point(913, 46);
-            this.cbCompany.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbCompany.Margin = new System.Windows.Forms.Padding(4);
             this.cbCompany.Name = "cbCompany";
             this.cbCompany.Size = new System.Drawing.Size(160, 24);
             this.cbCompany.TabIndex = 5;
@@ -177,10 +201,11 @@
             "01-Theodore",
             "02-Tuscaloosa"});
             this.cbBranch.Location = new System.Drawing.Point(644, 46);
-            this.cbBranch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbBranch.Margin = new System.Windows.Forms.Padding(4);
             this.cbBranch.Name = "cbBranch";
             this.cbBranch.Size = new System.Drawing.Size(160, 24);
             this.cbBranch.TabIndex = 4;
+            this.cbBranch.SelectedIndexChanged += new System.EventHandler(this.cbBranch_SelectedIndexChanged);
             // 
             // lblWeekEnding
             // 
@@ -214,7 +239,7 @@
             // dtpWeekEnding
             // 
             this.dtpWeekEnding.Location = new System.Drawing.Point(119, 47);
-            this.dtpWeekEnding.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpWeekEnding.Margin = new System.Windows.Forms.Padding(4);
             this.dtpWeekEnding.Name = "dtpWeekEnding";
             this.dtpWeekEnding.Size = new System.Drawing.Size(265, 23);
             this.dtpWeekEnding.TabIndex = 0;
@@ -222,6 +247,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnAddNote);
             this.panel2.Controls.Add(this.btnAddHours);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.label5);
@@ -233,25 +259,26 @@
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.cbPayrollItem);
             this.panel2.Controls.Add(this.cbClassEquip);
-            this.panel2.Controls.Add(this.dateTimePicker2);
+            this.panel2.Controls.Add(this.dtpDateWorked);
             this.panel2.Controls.Add(this.cbCustomer);
             this.panel2.Controls.Add(this.cbEmployee);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 105);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1492, 198);
+            this.panel2.Size = new System.Drawing.Size(1614, 198);
             this.panel2.TabIndex = 2;
             // 
             // btnAddHours
             // 
             this.btnAddHours.Location = new System.Drawing.Point(1361, 155);
-            this.btnAddHours.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddHours.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddHours.Name = "btnAddHours";
             this.btnAddHours.Size = new System.Drawing.Size(100, 28);
             this.btnAddHours.TabIndex = 15;
             this.btnAddHours.Text = "Add";
             this.btnAddHours.UseVisualStyleBackColor = true;
+            this.btnAddHours.Click += new System.EventHandler(this.btnAddHours_Click);
             // 
             // label10
             // 
@@ -276,7 +303,7 @@
             // tbHours
             // 
             this.tbHours.Location = new System.Drawing.Point(1273, 156);
-            this.tbHours.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbHours.Margin = new System.Windows.Forms.Padding(4);
             this.tbHours.Name = "tbHours";
             this.tbHours.Size = new System.Drawing.Size(67, 23);
             this.tbHours.TabIndex = 12;
@@ -287,9 +314,9 @@
             this.gbWorkDays.Controls.Add(this.rb410);
             this.gbWorkDays.Controls.Add(this.rbOver8);
             this.gbWorkDays.Location = new System.Drawing.Point(16, 52);
-            this.gbWorkDays.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbWorkDays.Margin = new System.Windows.Forms.Padding(4);
             this.gbWorkDays.Name = "gbWorkDays";
-            this.gbWorkDays.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbWorkDays.Padding = new System.Windows.Forms.Padding(4);
             this.gbWorkDays.Size = new System.Drawing.Size(1219, 63);
             this.gbWorkDays.TabIndex = 11;
             this.gbWorkDays.TabStop = false;
@@ -299,7 +326,7 @@
             // 
             this.rbOver40.AutoSize = true;
             this.rbOver40.Location = new System.Drawing.Point(195, 25);
-            this.rbOver40.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbOver40.Margin = new System.Windows.Forms.Padding(4);
             this.rbOver40.Name = "rbOver40";
             this.rbOver40.Size = new System.Drawing.Size(70, 21);
             this.rbOver40.TabIndex = 2;
@@ -311,7 +338,7 @@
             // 
             this.rb410.AutoSize = true;
             this.rb410.Location = new System.Drawing.Point(105, 25);
-            this.rb410.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rb410.Margin = new System.Windows.Forms.Padding(4);
             this.rb410.Name = "rb410";
             this.rb410.Size = new System.Drawing.Size(74, 21);
             this.rb410.TabIndex = 1;
@@ -323,7 +350,7 @@
             // 
             this.rbOver8.AutoSize = true;
             this.rbOver8.Location = new System.Drawing.Point(27, 25);
-            this.rbOver8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbOver8.Margin = new System.Windows.Forms.Padding(4);
             this.rbOver8.Name = "rbOver8";
             this.rbOver8.Size = new System.Drawing.Size(66, 21);
             this.rbOver8.TabIndex = 0;
@@ -375,7 +402,7 @@
             // 
             this.cbPayrollItem.FormattingEnabled = true;
             this.cbPayrollItem.Location = new System.Drawing.Point(721, 158);
-            this.cbPayrollItem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbPayrollItem.Margin = new System.Windows.Forms.Padding(4);
             this.cbPayrollItem.Name = "cbPayrollItem";
             this.cbPayrollItem.Size = new System.Drawing.Size(328, 24);
             this.cbPayrollItem.TabIndex = 4;
@@ -384,26 +411,26 @@
             // 
             this.cbClassEquip.FormattingEnabled = true;
             this.cbClassEquip.Location = new System.Drawing.Point(381, 156);
-            this.cbClassEquip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbClassEquip.Margin = new System.Windows.Forms.Padding(4);
             this.cbClassEquip.Name = "cbClassEquip";
             this.cbClassEquip.Size = new System.Drawing.Size(331, 24);
             this.cbClassEquip.TabIndex = 3;
             // 
-            // dateTimePicker2
+            // dtpDateWorked
             // 
-            this.dateTimePicker2.CustomFormat = "dddd - dd/mm/yy";
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(1071, 158);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(176, 23);
-            this.dateTimePicker2.TabIndex = 2;
+            this.dtpDateWorked.CustomFormat = "dddd - dd/mm/yy";
+            this.dtpDateWorked.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDateWorked.Location = new System.Drawing.Point(1071, 158);
+            this.dtpDateWorked.Margin = new System.Windows.Forms.Padding(4);
+            this.dtpDateWorked.Name = "dtpDateWorked";
+            this.dtpDateWorked.Size = new System.Drawing.Size(176, 23);
+            this.dtpDateWorked.TabIndex = 2;
             // 
             // cbCustomer
             // 
             this.cbCustomer.FormattingEnabled = true;
             this.cbCustomer.Location = new System.Drawing.Point(12, 158);
-            this.cbCustomer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbCustomer.Margin = new System.Windows.Forms.Padding(4);
             this.cbCustomer.Name = "cbCustomer";
             this.cbCustomer.Size = new System.Drawing.Size(348, 24);
             this.cbCustomer.TabIndex = 1;
@@ -414,7 +441,7 @@
             this.cbEmployee.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbEmployee.FormattingEnabled = true;
             this.cbEmployee.Location = new System.Drawing.Point(92, 7);
-            this.cbEmployee.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbEmployee.Margin = new System.Windows.Forms.Padding(4);
             this.cbEmployee.Name = "cbEmployee";
             this.cbEmployee.Size = new System.Drawing.Size(401, 24);
             this.cbEmployee.TabIndex = 0;
@@ -425,105 +452,24 @@
             this.tbTabs.Controls.Add(this.tabPage2);
             this.tbTabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbTabs.Location = new System.Drawing.Point(0, 303);
-            this.tbTabs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbTabs.Margin = new System.Windows.Forms.Padding(4);
             this.tbTabs.Name = "tbTabs";
             this.tbTabs.SelectedIndex = 0;
-            this.tbTabs.Size = new System.Drawing.Size(1492, 449);
+            this.tbTabs.Size = new System.Drawing.Size(1614, 449);
             this.tbTabs.TabIndex = 3;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.statusStrip1);
-            this.tabPage1.Controls.Add(this.dataGridView1);
+            this.tabPage1.Controls.Add(this.gvTimesheet);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage1.Size = new System.Drawing.Size(1484, 420);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Size = new System.Drawing.Size(1606, 420);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Entry";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Customer,
-            this.ClassEquipment,
-            this.PayrollItem,
-            this.Date,
-            this.Day,
-            this.RegHours,
-            this.OTHours});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(4, 4);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1476, 412);
-            this.dataGridView1.TabIndex = 4;
-            // 
-            // Customer
-            // 
-            this.Customer.HeaderText = "Customer";
-            this.Customer.Name = "Customer";
-            this.Customer.Width = 250;
-            // 
-            // ClassEquipment
-            // 
-            this.ClassEquipment.HeaderText = "Class/Equipment";
-            this.ClassEquipment.Name = "ClassEquipment";
-            this.ClassEquipment.Width = 250;
-            // 
-            // PayrollItem
-            // 
-            this.PayrollItem.HeaderText = "Payroll Item";
-            this.PayrollItem.Name = "PayrollItem";
-            this.PayrollItem.Width = 250;
-            // 
-            // Date
-            // 
-            this.Date.HeaderText = "Date";
-            this.Date.Name = "Date";
-            // 
-            // Day
-            // 
-            this.Day.HeaderText = "Day";
-            this.Day.Name = "Day";
-            this.Day.Width = 50;
-            // 
-            // RegHours
-            // 
-            this.RegHours.HeaderText = "Reg Hours";
-            this.RegHours.Name = "RegHours";
-            this.RegHours.Width = 50;
-            // 
-            // OTHours
-            // 
-            this.OTHours.HeaderText = "OT Hours";
-            this.OTHours.Name = "OTHours";
-            this.OTHours.Width = 50;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage2.Size = new System.Drawing.Size(1484, 444);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Recap";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblStatus.Location = new System.Drawing.Point(20, 4);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(0, 20);
-            this.lblStatus.TabIndex = 8;
             // 
             // statusStrip1
             // 
@@ -532,25 +478,179 @@
             this.ssProg});
             this.statusStrip1.Location = new System.Drawing.Point(4, 394);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1476, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1598, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // ssProg
-            // 
-            this.ssProg.Name = "ssProg";
-            this.ssProg.Size = new System.Drawing.Size(700, 16);
             // 
             // ssLabel
             // 
             this.ssLabel.Name = "ssLabel";
             this.ssLabel.Size = new System.Drawing.Size(0, 17);
             // 
+            // ssProg
+            // 
+            this.ssProg.Name = "ssProg";
+            this.ssProg.Size = new System.Drawing.Size(700, 16);
+            // 
+            // gvTimesheet
+            // 
+            this.gvTimesheet.AllowUserToAddRows = false;
+            this.gvTimesheet.AutoGenerateColumns = false;
+            this.gvTimesheet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.gvTimesheet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvTimesheet.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.custNameDataGridViewTextBoxColumn,
+            this.nameDataGridViewTextBoxColumn,
+            this.prNameDataGridViewTextBoxColumn,
+            this.dateDataGridViewTextBoxColumn,
+            this.oTHoursDataGridViewTextBoxColumn,
+            this.regHoursDataGridViewTextBoxColumn,
+            this.notesDataGridViewTextBoxColumn,
+            this.approvedDataGridViewCheckBoxColumn});
+            this.gvTimesheet.DataSource = this.vwTimelineItemsBindingSource;
+            this.gvTimesheet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvTimesheet.Location = new System.Drawing.Point(4, 4);
+            this.gvTimesheet.Margin = new System.Windows.Forms.Padding(4);
+            this.gvTimesheet.Name = "gvTimesheet";
+            this.gvTimesheet.Size = new System.Drawing.Size(1598, 412);
+            this.gvTimesheet.TabIndex = 4;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Size = new System.Drawing.Size(1606, 420);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Recap";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // quickbooksDataToolStripMenuItem
+            // 
+            this.quickbooksDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshEmployeeToolStripMenuItem,
+            this.refreshCustomersToolStripMenuItem,
+            this.refreshPayrollItemsToolStripMenuItem,
+            this.refreshClassesToolStripMenuItem});
+            this.quickbooksDataToolStripMenuItem.Name = "quickbooksDataToolStripMenuItem";
+            this.quickbooksDataToolStripMenuItem.Size = new System.Drawing.Size(109, 20);
+            this.quickbooksDataToolStripMenuItem.Text = "Quickbooks Data";
+            // 
+            // refreshEmployeeToolStripMenuItem
+            // 
+            this.refreshEmployeeToolStripMenuItem.Name = "refreshEmployeeToolStripMenuItem";
+            this.refreshEmployeeToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.refreshEmployeeToolStripMenuItem.Text = "Refresh Employee";
+            this.refreshEmployeeToolStripMenuItem.Click += new System.EventHandler(this.refreshEmployeeToolStripMenuItem_Click);
+            // 
+            // refreshCustomersToolStripMenuItem
+            // 
+            this.refreshCustomersToolStripMenuItem.Name = "refreshCustomersToolStripMenuItem";
+            this.refreshCustomersToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.refreshCustomersToolStripMenuItem.Text = "Refresh Customers";
+            this.refreshCustomersToolStripMenuItem.Click += new System.EventHandler(this.refreshCustomersToolStripMenuItem_Click);
+            // 
+            // refreshPayrollItemsToolStripMenuItem
+            // 
+            this.refreshPayrollItemsToolStripMenuItem.Name = "refreshPayrollItemsToolStripMenuItem";
+            this.refreshPayrollItemsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.refreshPayrollItemsToolStripMenuItem.Text = "Refresh Payroll Items";
+            this.refreshPayrollItemsToolStripMenuItem.Click += new System.EventHandler(this.refreshPayrollItemsToolStripMenuItem_Click);
+            // 
+            // refreshClassesToolStripMenuItem
+            // 
+            this.refreshClassesToolStripMenuItem.Name = "refreshClassesToolStripMenuItem";
+            this.refreshClassesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.refreshClassesToolStripMenuItem.Text = "Refresh Classes";
+            this.refreshClassesToolStripMenuItem.Click += new System.EventHandler(this.refreshClassesToolStripMenuItem_Click);
+            // 
+            // btnAddNote
+            // 
+            this.btnAddNote.Location = new System.Drawing.Point(1479, 155);
+            this.btnAddNote.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddNote.Name = "btnAddNote";
+            this.btnAddNote.Size = new System.Drawing.Size(100, 28);
+            this.btnAddNote.TabIndex = 16;
+            this.btnAddNote.Text = "Add Note";
+            this.btnAddNote.UseVisualStyleBackColor = true;
+            this.btnAddNote.Click += new System.EventHandler(this.btnAddNote_Click);
+            // 
+            // custNameDataGridViewTextBoxColumn
+            // 
+            this.custNameDataGridViewTextBoxColumn.DataPropertyName = "custName";
+            this.custNameDataGridViewTextBoxColumn.HeaderText = "custName";
+            this.custNameDataGridViewTextBoxColumn.Name = "custNameDataGridViewTextBoxColumn";
+            this.custNameDataGridViewTextBoxColumn.Width = 96;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Width = 70;
+            // 
+            // prNameDataGridViewTextBoxColumn
+            // 
+            this.prNameDataGridViewTextBoxColumn.DataPropertyName = "prName";
+            this.prNameDataGridViewTextBoxColumn.HeaderText = "prName";
+            this.prNameDataGridViewTextBoxColumn.Name = "prNameDataGridViewTextBoxColumn";
+            this.prNameDataGridViewTextBoxColumn.Width = 83;
+            // 
+            // dateDataGridViewTextBoxColumn
+            // 
+            this.dateDataGridViewTextBoxColumn.DataPropertyName = "Date";
+            this.dateDataGridViewTextBoxColumn.HeaderText = "Date";
+            this.dateDataGridViewTextBoxColumn.Name = "dateDataGridViewTextBoxColumn";
+            this.dateDataGridViewTextBoxColumn.Width = 63;
+            // 
+            // oTHoursDataGridViewTextBoxColumn
+            // 
+            this.oTHoursDataGridViewTextBoxColumn.DataPropertyName = "OTHours";
+            this.oTHoursDataGridViewTextBoxColumn.HeaderText = "OTHours";
+            this.oTHoursDataGridViewTextBoxColumn.Name = "oTHoursDataGridViewTextBoxColumn";
+            this.oTHoursDataGridViewTextBoxColumn.Width = 91;
+            // 
+            // regHoursDataGridViewTextBoxColumn
+            // 
+            this.regHoursDataGridViewTextBoxColumn.DataPropertyName = "RegHours";
+            this.regHoursDataGridViewTextBoxColumn.HeaderText = "RegHours";
+            this.regHoursDataGridViewTextBoxColumn.Name = "regHoursDataGridViewTextBoxColumn";
+            this.regHoursDataGridViewTextBoxColumn.Width = 97;
+            // 
+            // notesDataGridViewTextBoxColumn
+            // 
+            this.notesDataGridViewTextBoxColumn.DataPropertyName = "Notes";
+            this.notesDataGridViewTextBoxColumn.HeaderText = "Notes";
+            this.notesDataGridViewTextBoxColumn.Name = "notesDataGridViewTextBoxColumn";
+            this.notesDataGridViewTextBoxColumn.Width = 70;
+            // 
+            // approvedDataGridViewCheckBoxColumn
+            // 
+            this.approvedDataGridViewCheckBoxColumn.DataPropertyName = "Approved";
+            this.approvedDataGridViewCheckBoxColumn.HeaderText = "Approved";
+            this.approvedDataGridViewCheckBoxColumn.Name = "approvedDataGridViewCheckBoxColumn";
+            this.approvedDataGridViewCheckBoxColumn.Width = 75;
+            // 
+            // vwTimelineItemsBindingSource
+            // 
+            this.vwTimelineItemsBindingSource.DataMember = "vw_TimelineItems";
+            this.vwTimelineItemsBindingSource.DataSource = this.wPCompanyDataSet;
+            // 
+            // wPCompanyDataSet
+            // 
+            this.wPCompanyDataSet.DataSetName = "WPCompanyDataSet";
+            this.wPCompanyDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // vw_TimelineItemsTableAdapter
+            // 
+            this.vw_TimelineItemsTableAdapter.ClearBeforeFill = true;
+            // 
             // fmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1492, 752);
+            this.ClientSize = new System.Drawing.Size(1614, 752);
             this.Controls.Add(this.tbTabs);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -558,7 +658,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "fmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Timesheet Entry";
@@ -575,9 +675,11 @@
             this.tbTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwTimelineItemsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wPCompanyDataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -605,20 +707,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cbPayrollItem;
         private System.Windows.Forms.ComboBox cbClassEquip;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dtpDateWorked;
         private System.Windows.Forms.ComboBox cbCustomer;
         private System.Windows.Forms.ComboBox cbEmployee;
         private System.Windows.Forms.TabControl tbTabs;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView gvTimesheet;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Customer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ClassEquipment;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PayrollItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Day;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RegHours;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OTHours;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbHours;
@@ -631,6 +726,23 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel ssLabel;
         private System.Windows.Forms.ToolStripProgressBar ssProg;
+        private System.Windows.Forms.ToolStripMenuItem quickbooksDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshEmployeeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshCustomersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshPayrollItemsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshClassesToolStripMenuItem;
+        private System.Windows.Forms.Button btnAddNote;
+        private WPCompanyDataSet wPCompanyDataSet;
+        private System.Windows.Forms.BindingSource vwTimelineItemsBindingSource;
+        private WPCompanyDataSetTableAdapters.vw_TimelineItemsTableAdapter vw_TimelineItemsTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn custNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn oTHoursDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn regHoursDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn notesDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn approvedDataGridViewCheckBoxColumn;
     }
 }
 

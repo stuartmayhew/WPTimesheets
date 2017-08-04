@@ -88,7 +88,6 @@ namespace Timesheets.Helpers
     {
         public virtual int WriteInsertSQL(string tableName, T ModelToSubmit, string pKeyName, string connStr)
         {
-
             int newSubmitID = -1;
 
             var NotMapped = new List<String>();

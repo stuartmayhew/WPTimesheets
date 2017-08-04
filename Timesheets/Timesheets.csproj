@@ -52,6 +52,8 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -78,6 +80,12 @@
     <Compile Include="fmMain.Designer.cs">
       <DependentUpon>fmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmNote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmNote.Designer.cs">
+      <DependentUpon>fmNote.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmSplash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,13 +111,25 @@
     <Compile Include="Models\QBModels\QBEmployee.cs" />
     <Compile Include="Models\QBModels\QBPayrollItem.cs" />
     <Compile Include="Models\QBModels\QBClass.cs" />
+    <Compile Include="Models\TimeSheet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPCompanyDataSet.cs">
+      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="WPCompanyDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="fmLogin.resx">
       <DependentUpon>fmLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmMain.resx">
       <DependentUpon>fmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmNote.resx">
+      <DependentUpon>fmNote.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmSplash.resx">
       <DependentUpon>fmSplash.cs</DependentUpon>
@@ -132,6 +152,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="WPCompanyDataSet.xsc">
+      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="WPCompanyDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>WPCompanyDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WPCompanyDataSet.xss">
+      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

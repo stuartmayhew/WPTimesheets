@@ -21,6 +21,11 @@ namespace Timesheets.Helpers
             CommonProcs.KillQuickbooks();
         }
 
+        public QBDataPump()
+        {
+            CommonProcs.KillQuickbooks();
+        }
+
         public int PumpCustomers(string Company)
         {
             string sql = "SELECT * FROM Customer WHERE TimeModified > " + CommonProcs.TimeStampString(DateTime.Now.AddDays(-1));
