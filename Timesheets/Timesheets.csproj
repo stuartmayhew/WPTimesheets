@@ -102,6 +102,7 @@
     <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Clss.cs" />
+    <Compile Include="Models\ComboBoxItem.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Login.cs" />
@@ -112,16 +113,9 @@
     <Compile Include="Models\QBModels\QBPayrollItem.cs" />
     <Compile Include="Models\QBModels\QBClass.cs" />
     <Compile Include="Models\TimeSheet.cs" />
+    <Compile Include="Models\TimesheetEntryGrid.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WPCompanyDataSet.cs">
-      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="WPCompanyDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="fmLogin.resx">
       <DependentUpon>fmLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -152,17 +146,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="WPCompanyDataSet.xsc">
-      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="WPCompanyDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>WPCompanyDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="WPCompanyDataSet.xss">
-      <DependentUpon>WPCompanyDataSet.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

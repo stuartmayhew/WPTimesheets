@@ -18,7 +18,7 @@ namespace Timesheets.Models
         public int ClassID { get; set; }
         public int PayrollItemID { get; set; }
         public string Notes { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime WorkDate { get; set; }
         public decimal OTHours { get; set; }
         public decimal RegHours { get; set; }
         public bool Approved { get; set; }

@@ -18,7 +18,9 @@ namespace Timesheets
         int branch;
         string userName;
         string noteText;
-        decimal totalHoursForWeek = 0.0M;
+        decimal totalRegTime = 0.0M;
+        decimal totalOTTime = 0.0M;
+        bool isLoading = false;
         public fmMain()
         {
             Thread t = new Thread(new ThreadStart(SplashStart));
@@ -38,13 +40,16 @@ namespace Timesheets
             fmLogin fLogin = new fmLogin();
             DialogResult = fLogin.ShowDialog();
             lblWeekEnding.Text = CommonProcs.GetWeekEnding(DateTime.Now).ToShortDateString();
+            dtpWeekEnding.Value = CommonProcs.GetWeekEnding(DateTime.Now);
             userName = MyConfig.ReadValue("firstName") + " " + MyConfig.ReadValue("lastName");
             accessLevel = int.Parse(MyConfig.ReadValue("accessLevel"));
             branch = int.Parse(MyConfig.ReadValue("branch"));
-            Text = "Timesheet Entry v." + Application.ProductVersion.ToString();
+            Text = "Timesheet Entry";
             lblStatus.Text = "Current user: " + userName + "  Current Branch: " + branch;
+            isLoading = true;
             LoadMainCombos();
             LoadBranchCombos();
+            isLoading = false;
             cbCompany.SelectedIndex = 0;
             FillGridView();
         }
@@ -126,25 +131,25 @@ namespace Timesheets
 
         private void refreshEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            QBDataPump pump = new QBDataPump();
+            QBDataPump pump = new QBDataPump(statusStrip1);
             pump.PumpEmployees(GetCurrentCompany());
         }
 
         private void refreshCustomersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            QBDataPump pump = new QBDataPump();
+            QBDataPump pump = new QBDataPump(statusStrip1);
             pump.PumpCustomers(GetCurrentCompany());
         }
 
         private void refreshPayrollItemsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            QBDataPump pump = new QBDataPump();
+            QBDataPump pump = new QBDataPump(statusStrip1);
             pump.PumpPayrollItems(GetCurrentCompany());
         }
 
         private void refreshClassesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            QBDataPump pump = new QBDataPump();
+            QBDataPump pump = new QBDataPump(statusStrip1);
             pump.PumpClass(GetCurrentCompany());
         }
 
@@ -157,69 +162,39 @@ namespace Timesheets
             ts.PayrollItemID = int.Parse(cbPayrollItem.SelectedValue.ToString());
 
             decimal hours = decimal.Parse(tbHours.Text);
-            totalHoursForWeek += hours;
 
-            ts.RegHours = CalcRegularHours(hours);
-            ts.OTHours = CalcOTHours(hours);
+            if (((ComboBoxItem)cbPayrollItem.SelectedItem).key.Contains("RG"))
+            {
+                ts.RegHours = hours;
+                totalRegTime += hours;
+            }
+            if (((ComboBoxItem)cbPayrollItem.SelectedItem).key.Contains("OT"))
+            {
+                ts.OTHours = hours;
+                totalOTTime += hours;
+            }
             if (ts.OTHours < 0)
             {
                 return;
             }
-            ts.Date = dtpDateWorked.Value;
+            ts.WorkDate = dtpDateWorked.Value;
             ts.WeekEnding = dtpWeekEnding.Value;
             ts.Notes = noteText;
             ts.Approved = false;
             ts.TimesheetID = new ModelToSQL<TimeSheet>().WriteInsertSQL("Timesheet", ts, "TimesheetID", CommonProcs.WCompanyConnStr);
             FillGridView();
+            dtpDateWorked.Value = dtpDateWorked.Value.AddDays(1);
+            dtpDateWorked.Focus();
         }
 
         private void FillGridView()
         {
-            vw_TimelineItemsTableAdapter.Fill(wPCompanyDataSet.vw_TimelineItems, int.Parse(cbEmployee.SelectedValue.ToString()));
-            gvTimesheet.DataSource = vw_TimelineItemsTableAdapter;
-            gvTimesheet.Refresh();
+            string sql = "SELECT TimesheetID AS ID,Customer,ClassEquip,PayrollItem,WorkDate,WorkDay,RegHours,OTHours,Notes ";
+            sql += "FROM TimesheetEntryGrid WHERE EmployeeID = " + cbEmployee.SelectedValue;
+            List<TimesheetEntryGrid> gridRows = new ReaderToModel<TimesheetEntryGrid>().CreateList(sql,CommonProcs.WCompanyConnStr);
+            gvTimesheet.DataSource = gridRows;
         }
 
-        private decimal CalcOTHours(decimal hours)
-        {
-            if (rbOver8.Checked)
-            {
-                if (hours >= 8.0M)
-                    return hours - 8.0M;
-                else
-                    return 0.0M;
-            }
-            else if (rb410.Checked)
-            {
-                if (hours >= 10.0M)
-                    return hours - 10.0M;
-                else
-                    return 10.0M;
-            }
-
-            else if (rbOver40.Checked)
-            {
-                if (totalHoursForWeek >= 40)
-                    return hours;
-                else
-                    return 0;
-            }
-            else
-            {
-                MessageBox.Show("Please select OT when worked option");
-                return -1;
-            }
-        }
-
-        private decimal CalcRegularHours(decimal hours)
-        {
-            if (rbOver8.Checked)
-                return 8.0M;
-            else if (rb410.Checked)
-                return 10.0M;
-            else
-                return hours;
-        }
 
         private void cbBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -232,6 +207,12 @@ namespace Timesheets
             fNote.ShowDialog();
             if (fNote.noteText != string.Empty)
                 noteText = fNote.noteText;
+        }
+
+        private void cbEmployee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isLoading)
+                FillGridView();
         }
     }
 }

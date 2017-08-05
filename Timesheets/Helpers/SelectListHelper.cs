@@ -75,9 +75,5 @@ namespace Timesheets.Helpers
         }
     }
 
-    public class ComboBoxItem
-    {
-        public string key { get; set; }
-        public int value { get; set; }
-    }
+
 }
