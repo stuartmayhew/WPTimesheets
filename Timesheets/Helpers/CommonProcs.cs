@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using Timesheets.Models;
 
 namespace Timesheets.Helpers
 {
@@ -87,6 +88,25 @@ namespace Timesheets.Helpers
                 proc[0].Kill();
         }
 
+        internal static List<int> GetFacList(string branchStr)
+        {
+            List<int> facList = new List<int>();
+            string sql = "SELECT * FROM Facility ";
+            if (branchStr != "AA")
+                sql += "WHERE Branch = '" + branchStr + "' ";
+            List<Facility> facs = new ReaderToModel<Facility>().CreateList(sql, WCompanyConnStr);
+            foreach (var fac in facs)
+            {
+                facList.Add(fac.facID);
+            }
+            return facList;
+        }
+
+        internal static int CheckAccessLevel()
+        {
+            string accLevel = MyConfig.ReadValue("accessLevel");
+            return int.Parse(accLevel);
+        }
     }
 }
  

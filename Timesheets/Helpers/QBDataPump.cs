@@ -51,9 +51,9 @@ namespace Timesheets.Helpers
                         cust.Branch = cust.Name.Substring(0, 2);
                         using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
                         {
-                            dg.RunCommand("DELETE FROM Customer WHERE ListID='" + cust.ListID + "' AND QBFile='" + Company + "'");
+                            cust.CustomerID = dg.GetScalarInteger("SELECT CustomerID FROM Customer WHERE ListID='" + cust.ListID + "' AND QBFile='" + Company + "'");
                         }
-                        new ModelToSQL<Customer>().WriteInsertSQL("Customer", cust, "CustomerID", CommonProcs.WCompanyConnStr);
+                        new ModelToSQL<Customer>().WriteUpdateToSQL("Customer", cust, "CustomerID", CommonProcs.WCompanyConnStr);
                     }
                 }
             }
@@ -75,11 +75,12 @@ namespace Timesheets.Helpers
                     UpdateStatusBar("Adding " + QBemp.Name, 1);
                     Employee emp = QBemp.ConvertTo<Employee>();
                     emp.QBFile = Company;
+                    
                     using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
                     {
-                        dg.RunCommand("DELETE FROM Customer WHERE ListID='" + emp.ListID + "' AND QBFile='" + Company + "'");
+                        emp.EmployeeID = dg.GetScalarInteger("SELECT EmployeeID FROM Employee WHERE ListID='" + emp.ListID + "' AND QBFile='" + Company + "'");
                     }
-                    new ModelToSQL<Employee>().WriteInsertSQL("Employee", emp, "EmployeeID", CommonProcs.WCompanyConnStr);
+                    new ModelToSQL<Employee>().WriteUpdateToSQL("Employee", emp, "EmployeeID", CommonProcs.WCompanyConnStr);
                 }
             }
             UpdateStatusBar("Done", progBar.Maximum);
@@ -102,9 +103,9 @@ namespace Timesheets.Helpers
                         payItem.QBFile = Company;
                         using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
                         {
-                            dg.RunCommand("DELETE FROM Payrollitem WHERE ListID='" + payItem.ListID + "' AND QBFile='" + Company + "'");
+                            payItem.payItemID = dg.GetScalarInteger("SELECT payItemID FROM PayrollItem WHERE ListID='" + payItem.ListID + "' AND QBFile='" + Company + "'");
                         }
-                        new ModelToSQL<PayrollItem>().WriteInsertSQL("PayrollItem", payItem, "payItemID", CommonProcs.WCompanyConnStr);
+                        new ModelToSQL<PayrollItem>().WriteUpdateToSQL("PayrollItem", payItem, "payItemID", CommonProcs.WCompanyConnStr);
                     }
                 }
             }
@@ -129,9 +130,9 @@ namespace Timesheets.Helpers
                         clss.Branch = clss.Name.Substring(0, 2);
                         using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
                         {
-                            dg.RunCommand("DELETE FROM Clss WHERE ListID='" + clss.ListID + "' AND QBFile='" + Company + "'");
+                            clss.ClassID = dg.GetScalarInteger("SELECT ClassID FROM Clss WHERE ListID='" + clss.ListID + "' AND QBFile='" + Company + "'");
                         }
-                        new ModelToSQL<Clss>().WriteInsertSQL("PayrollItem", clss, "ClassID", CommonProcs.WCompanyConnStr);
+                        new ModelToSQL<Clss>().WriteUpdateToSQL("Clss", clss, "ClassID", CommonProcs.WCompanyConnStr);
                     }
                 }
             }

@@ -12,6 +12,7 @@ namespace Timesheets.Models
         [Key]
         public int EmployeeID { get; set; }
         public string QBFile { get; set; }
+        public string Branch { get; set; }
         public string ListID { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -22,6 +23,7 @@ namespace Timesheets.Models
         public string JobTitle { get; set; }
         public string SupervisorID { get; set; }
         public string Phone { get; set; }
+        public string Email { get; set; }
         public string EmployeeType { get; set; }
         public string BillingRateRefListID { get; set; }
         public string BillingRateRefFullName { get; set; }
