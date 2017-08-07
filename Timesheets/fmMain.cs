@@ -213,7 +213,7 @@ namespace Timesheets
 
         private void FillGridView()
         {
-            string sql = "SELECT TimesheetID AS ID,Customer,Facility,Area,";
+            string sql = "SELECT TimesheetID,Customer,Facility,Area,";
             sql += "ClassEquip,PayrollItem,WorkDate,";
             sql += "WorkDay,RegHours,OTHours,Notes ";
             sql += "FROM TimesheetEntryGrid WHERE EmployeeID = " + cbEmployee.SelectedValue;
@@ -473,18 +473,36 @@ namespace Timesheets
             fLogEdit.ShowDialog();
         }
 
-        private void Combo_KeyPress(object sender, KeyPressEventArgs e)
+        private void gvTimesheet_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            ComboBox box = (ComboBox)sender;
-            string searchStr = box.Text;
-            var autoComplete = new AutoCompleteStringCollection();
-            ComboBox.ObjectCollection items = box.Items;
-            foreach(ComboBoxItem item in items)
+            if (e.ColumnIndex != 8 && e.ColumnIndex != 9)
+                return;
+            string colName = "RegHours";
+            if (e.ColumnIndex == 8)
+                colName = "OTHours";
+            string newValue = gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            string timeSheetID = gvTimesheet.Rows[e.RowIndex].Cells[0].Value.ToString();
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
             {
-                if (item.key.Contains(searchStr))
-                    autoComplete.Add(item.key);
-
+                string sql = "UPDATE Timesheet SET " + colName + " = " + newValue + " WHERE TimesheetID=" + timeSheetID;
+                dg.RunCommand(sql);
             }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (gvTimesheet.SelectedRows.Count() < 1)
+            {
+                MessageBox.Show("Please select the entry before trying to delete");
+                return;
+            }
+            string TimelineID = gvTimesheet.SelectedRows[0].Cells[0].Value.ToString();
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
+            {
+                string sql = "DELETE FROM Timesheet  WHERE TimesheetID=" + TimelineID;
+                dg.RunCommand(sql);
+            }
+            FillGridView();
         }
     }
 }

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using Timesheets.Models;
+using System.Data;
+using System.Reflection;
 
 namespace Timesheets.Helpers
 {

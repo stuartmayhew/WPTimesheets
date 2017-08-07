@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fmMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.setupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,6 +81,8 @@
             this.gvTimesheet = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.gvRecap = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -89,6 +92,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvRecap)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -432,8 +436,8 @@
             // 
             // cbCustomer
             // 
-            this.cbCustomer.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
-            this.cbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.cbCustomer.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCustomer.DropDownWidth = 800;
             this.cbCustomer.FormattingEnabled = true;
             this.cbCustomer.Location = new System.Drawing.Point(251, 124);
@@ -441,7 +445,6 @@
             this.cbCustomer.Name = "cbCustomer";
             this.cbCustomer.Size = new System.Drawing.Size(339, 24);
             this.cbCustomer.TabIndex = 2;
-            this.cbCustomer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Combo_KeyPress);
             // 
             // cbClassEquip
             // 
@@ -596,12 +599,14 @@
             this.gvTimesheet.AllowUserToAddRows = false;
             this.gvTimesheet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.gvTimesheet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvTimesheet.ContextMenuStrip = this.contextMenuStrip1;
             this.gvTimesheet.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvTimesheet.Location = new System.Drawing.Point(4, 4);
             this.gvTimesheet.Margin = new System.Windows.Forms.Padding(4);
             this.gvTimesheet.Name = "gvTimesheet";
             this.gvTimesheet.Size = new System.Drawing.Size(1736, 440);
             this.gvTimesheet.TabIndex = 4;
+            this.gvTimesheet.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellValueChanged);
             // 
             // tabPage2
             // 
@@ -628,6 +633,21 @@
             this.gvRecap.Size = new System.Drawing.Size(1736, 440);
             this.gvRecap.TabIndex = 0;
             this.gvRecap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvRecap_CellContentClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.ShowImageMargin = false;
+            this.contextMenuStrip1.Size = new System.Drawing.Size(113, 26);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem1.Text = "Delete Entry";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // fmMain
             // 
@@ -661,6 +681,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvRecap)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -727,6 +748,8 @@
         private System.Windows.Forms.ComboBox cbFac;
         private System.Windows.Forms.ToolStripMenuItem setupLoginsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem employeesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

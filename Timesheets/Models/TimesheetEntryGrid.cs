@@ -8,6 +8,7 @@ namespace Timesheets.Models
 {
     public class TimesheetEntryGrid
     {
+        public int TimesheetID { get; set; }
         public string Customer { get; set; }
         public string Facility { get; set; }
         public string Area { get; set; }
