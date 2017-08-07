@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Timesheets.Models;
 namespace Timesheets.Helpers
 {
@@ -27,7 +28,7 @@ namespace Timesheets.Helpers
             return items;
         }
 
-        internal static List<ComboBoxItem> GetCustomerList(string QBFile, string branchStr,bool showActive)
+        internal static List<ComboBoxItem> GetCustomerList(string QBFile, string branchStr,bool showActive,string searchStr = "")
         {
             List<ComboBoxItem> items = new List<ComboBoxItem>();
             string sql = "SELECT * FROM Customer WHERE QBFile = '" + QBFile + "' ";
@@ -35,6 +36,8 @@ namespace Timesheets.Helpers
                 sql += "AND branch = '" + branchStr.Trim() + "' ";
             if (showActive)
                 sql += " AND isActive = 1";
+            if (searchStr != string.Empty)
+                sql += " AND FullName LIKE '%" + searchStr + "%'";
             List<Customer> custList = new ReaderToModel<Customer>().CreateList(sql, CommonProcs.WCompanyConnStr);
             foreach (var cust in custList)
             {
@@ -114,6 +117,34 @@ namespace Timesheets.Helpers
                 items.Add(cbItem);
             }
             return items;
+        }
+
+        public static void AutoComplete(ComboBox cb,KeyPressEventArgs e, bool blnLimitToList = false)
+        {
+            string strFindStr = "";
+
+            if (e.KeyChar == (char)8)
+            {
+                if (cb.SelectionStart <= 1)
+                {
+                    cb.Text = "";
+                    return;
+                }
+
+                if (cb.SelectionLength == 0)
+                    strFindStr = cb.Text.Substring(0, cb.Text.Length - 1);
+                else
+                    strFindStr = cb.Text.Substring(0, cb.SelectionStart - 1);
+            }
+            else
+            {
+                if (cb.SelectionLength == 0)
+                    strFindStr = cb.Text + e.KeyChar;
+                else
+                    strFindStr = cb.Text.Substring(0, cb.SelectionStart) + e.KeyChar;
+            }
+            cb.DataSource = GetCustomerList("W", "01", true, strFindStr);
+
         }
     }
 

@@ -33,6 +33,8 @@
             this.setupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setupFacilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setupAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setupLoginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.employeesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quickbooksDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshCustomersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +52,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dtpWeekEnding = new System.Windows.Forms.DateTimePicker();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cbArea = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbFac = new System.Windows.Forms.ComboBox();
             this.btnShowActiveCust = new System.Windows.Forms.Button();
             this.btnShowActive = new System.Windows.Forms.Button();
             this.btnAddNote = new System.Windows.Forms.Button();
@@ -74,12 +80,6 @@
             this.gvTimesheet = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.gvRecap = new System.Windows.Forms.DataGridView();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cbFac = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.cbArea = new System.Windows.Forms.ComboBox();
-            this.setupLoginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.employeesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -117,16 +117,29 @@
             // setupFacilityToolStripMenuItem
             // 
             this.setupFacilityToolStripMenuItem.Name = "setupFacilityToolStripMenuItem";
-            this.setupFacilityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setupFacilityToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.setupFacilityToolStripMenuItem.Text = "Facilities";
             this.setupFacilityToolStripMenuItem.Click += new System.EventHandler(this.setupFacilityToolStripMenuItem_Click);
             // 
             // setupAreaToolStripMenuItem
             // 
             this.setupAreaToolStripMenuItem.Name = "setupAreaToolStripMenuItem";
-            this.setupAreaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setupAreaToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.setupAreaToolStripMenuItem.Text = "Areas";
             this.setupAreaToolStripMenuItem.Click += new System.EventHandler(this.setupAreaToolStripMenuItem_Click);
+            // 
+            // setupLoginsToolStripMenuItem
+            // 
+            this.setupLoginsToolStripMenuItem.Name = "setupLoginsToolStripMenuItem";
+            this.setupLoginsToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.setupLoginsToolStripMenuItem.Text = "Logins";
+            this.setupLoginsToolStripMenuItem.Click += new System.EventHandler(this.setupLoginsToolStripMenuItem_Click);
+            // 
+            // employeesToolStripMenuItem
+            // 
+            this.employeesToolStripMenuItem.Name = "employeesToolStripMenuItem";
+            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.employeesToolStripMenuItem.Text = "Employees";
             // 
             // quickbooksDataToolStripMenuItem
             // 
@@ -322,6 +335,49 @@
             this.panel2.Size = new System.Drawing.Size(1752, 170);
             this.panel2.TabIndex = 2;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(769, 99);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(38, 17);
+            this.label11.TabIndex = 22;
+            this.label11.Text = "Area";
+            // 
+            // cbArea
+            // 
+            this.cbArea.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbArea.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbArea.FormattingEnabled = true;
+            this.cbArea.Location = new System.Drawing.Point(772, 124);
+            this.cbArea.Margin = new System.Windows.Forms.Padding(4);
+            this.cbArea.Name = "cbArea";
+            this.cbArea.Size = new System.Drawing.Size(178, 24);
+            this.cbArea.TabIndex = 21;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(595, 99);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 17);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Facility";
+            // 
+            // cbFac
+            // 
+            this.cbFac.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbFac.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbFac.FormattingEnabled = true;
+            this.cbFac.Location = new System.Drawing.Point(598, 124);
+            this.cbFac.Margin = new System.Windows.Forms.Padding(4);
+            this.cbFac.Name = "cbFac";
+            this.cbFac.Size = new System.Drawing.Size(166, 24);
+            this.cbFac.TabIndex = 19;
+            this.cbFac.SelectedIndexChanged += new System.EventHandler(this.cbFac_SelectedIndexChanged);
+            // 
             // btnShowActiveCust
             // 
             this.btnShowActiveCust.Location = new System.Drawing.Point(319, 95);
@@ -376,8 +432,8 @@
             // 
             // cbCustomer
             // 
-            this.cbCustomer.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbCustomer.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.cbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbCustomer.DropDownWidth = 800;
             this.cbCustomer.FormattingEnabled = true;
             this.cbCustomer.Location = new System.Drawing.Point(251, 124);
@@ -385,6 +441,7 @@
             this.cbCustomer.Name = "cbCustomer";
             this.cbCustomer.Size = new System.Drawing.Size(339, 24);
             this.cbCustomer.TabIndex = 2;
+            this.cbCustomer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Combo_KeyPress);
             // 
             // cbClassEquip
             // 
@@ -553,7 +610,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1606, 482);
+            this.tabPage2.Size = new System.Drawing.Size(1744, 448);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Recap";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -568,65 +625,9 @@
             this.gvRecap.Location = new System.Drawing.Point(4, 4);
             this.gvRecap.Name = "gvRecap";
             this.gvRecap.ReadOnly = true;
-            this.gvRecap.Size = new System.Drawing.Size(1598, 474);
+            this.gvRecap.Size = new System.Drawing.Size(1736, 440);
             this.gvRecap.TabIndex = 0;
             this.gvRecap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvRecap_CellContentClick);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(595, 99);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 17);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Facility";
-            // 
-            // cbFac
-            // 
-            this.cbFac.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbFac.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbFac.FormattingEnabled = true;
-            this.cbFac.Location = new System.Drawing.Point(598, 124);
-            this.cbFac.Margin = new System.Windows.Forms.Padding(4);
-            this.cbFac.Name = "cbFac";
-            this.cbFac.Size = new System.Drawing.Size(166, 24);
-            this.cbFac.TabIndex = 19;
-            this.cbFac.SelectedIndexChanged += new System.EventHandler(this.cbFac_SelectedIndexChanged);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(769, 99);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(38, 17);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "Area";
-            // 
-            // cbArea
-            // 
-            this.cbArea.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbArea.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbArea.FormattingEnabled = true;
-            this.cbArea.Location = new System.Drawing.Point(772, 124);
-            this.cbArea.Margin = new System.Windows.Forms.Padding(4);
-            this.cbArea.Name = "cbArea";
-            this.cbArea.Size = new System.Drawing.Size(178, 24);
-            this.cbArea.TabIndex = 21;
-            // 
-            // setupLoginsToolStripMenuItem
-            // 
-            this.setupLoginsToolStripMenuItem.Name = "setupLoginsToolStripMenuItem";
-            this.setupLoginsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.setupLoginsToolStripMenuItem.Text = "Logins";
-            this.setupLoginsToolStripMenuItem.Click += new System.EventHandler(this.setupLoginsToolStripMenuItem_Click);
-            // 
-            // employeesToolStripMenuItem
-            // 
-            this.employeesToolStripMenuItem.Name = "employeesToolStripMenuItem";
-            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.employeesToolStripMenuItem.Text = "Employees";
             // 
             // fmMain
             // 

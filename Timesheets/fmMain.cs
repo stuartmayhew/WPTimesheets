@@ -472,5 +472,19 @@ namespace Timesheets
             fmLoginEdit fLogEdit = new fmLoginEdit();
             fLogEdit.ShowDialog();
         }
+
+        private void Combo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ComboBox box = (ComboBox)sender;
+            string searchStr = box.Text;
+            var autoComplete = new AutoCompleteStringCollection();
+            ComboBox.ObjectCollection items = box.Items;
+            foreach(ComboBoxItem item in items)
+            {
+                if (item.key.Contains(searchStr))
+                    autoComplete.Add(item.key);
+
+            }
+        }
     }
 }

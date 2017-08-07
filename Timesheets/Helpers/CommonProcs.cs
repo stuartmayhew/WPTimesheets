@@ -12,8 +12,8 @@ namespace Timesheets.Helpers
 {
     public static class CommonProcs
     {
-        public static string QBConnStr = "Data Source=13.58.68.10;Initial Catalog=WPAccess;Persist Security Info=True;User ID=sa;Password=Sh@dow111";
-        public static string WCompanyConnStr = "Data Source=13.58.68.10;Initial Catalog=WPCompany;Persist Security Info=True;User ID=sa;Password=Sh@dow111";
+        public static string QBConnStr = "Data Source=52.15.204.7;Initial Catalog=WPAccess;Persist Security Info=True;User ID=sa;Password=Sh@dow111";
+        public static string WCompanyConnStr = "Data Source=52.15.204.7;Initial Catalog=WPCompany;Persist Security Info=True;User ID=sa;Password=Sh@dow111";
 
         public static string TimeStampString(DateTime date)
         {
