@@ -79,10 +79,15 @@
             this.ssLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssProg = new System.Windows.Forms.ToolStripProgressBar();
             this.gvTimesheet = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.gvRecap = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.gvRecap = new System.Windows.Forms.DataGridView();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnCheckHO = new System.Windows.Forms.Button();
+            this.btnCheckOM = new System.Windows.Forms.Button();
+            this.btnCheckSup = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -90,9 +95,11 @@
             this.tabPage1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvRecap)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -358,7 +365,7 @@
             this.cbArea.Margin = new System.Windows.Forms.Padding(4);
             this.cbArea.Name = "cbArea";
             this.cbArea.Size = new System.Drawing.Size(178, 24);
-            this.cbArea.TabIndex = 21;
+            this.cbArea.TabIndex = 4;
             // 
             // label3
             // 
@@ -379,7 +386,7 @@
             this.cbFac.Margin = new System.Windows.Forms.Padding(4);
             this.cbFac.Name = "cbFac";
             this.cbFac.Size = new System.Drawing.Size(166, 24);
-            this.cbFac.TabIndex = 19;
+            this.cbFac.TabIndex = 3;
             this.cbFac.SelectedIndexChanged += new System.EventHandler(this.cbFac_SelectedIndexChanged);
             // 
             // btnShowActiveCust
@@ -429,7 +436,7 @@
             this.btnAddHours.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddHours.Name = "btnAddHours";
             this.btnAddHours.Size = new System.Drawing.Size(65, 28);
-            this.btnAddHours.TabIndex = 6;
+            this.btnAddHours.TabIndex = 8;
             this.btnAddHours.Text = "Add";
             this.btnAddHours.UseVisualStyleBackColor = true;
             this.btnAddHours.Click += new System.EventHandler(this.btnAddHours_Click);
@@ -455,7 +462,7 @@
             this.cbClassEquip.Margin = new System.Windows.Forms.Padding(4);
             this.cbClassEquip.Name = "cbClassEquip";
             this.cbClassEquip.Size = new System.Drawing.Size(272, 24);
-            this.cbClassEquip.TabIndex = 3;
+            this.cbClassEquip.TabIndex = 5;
             // 
             // label10
             // 
@@ -496,7 +503,7 @@
             this.cbPayrollItem.Margin = new System.Windows.Forms.Padding(4);
             this.cbPayrollItem.Name = "cbPayrollItem";
             this.cbPayrollItem.Size = new System.Drawing.Size(231, 24);
-            this.cbPayrollItem.TabIndex = 4;
+            this.cbPayrollItem.TabIndex = 6;
             // 
             // tbHours
             // 
@@ -504,7 +511,8 @@
             this.tbHours.Margin = new System.Windows.Forms.Padding(4);
             this.tbHours.Name = "tbHours";
             this.tbHours.Size = new System.Drawing.Size(67, 23);
-            this.tbHours.TabIndex = 5;
+            this.tbHours.TabIndex = 7;
+            this.tbHours.Enter += new System.EventHandler(this.tbHours_Enter);
             // 
             // label8
             // 
@@ -608,9 +616,25 @@
             this.gvTimesheet.TabIndex = 4;
             this.gvTimesheet.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellValueChanged);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.ShowImageMargin = false;
+            this.contextMenuStrip1.Size = new System.Drawing.Size(113, 26);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem1.Text = "Delete Entry";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.gvRecap);
+            this.tabPage2.Controls.Add(this.panel4);
+            this.tabPage2.Controls.Add(this.panel3);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
@@ -627,27 +651,64 @@
             this.gvRecap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.gvRecap.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvRecap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvRecap.Location = new System.Drawing.Point(4, 4);
+            this.gvRecap.Location = new System.Drawing.Point(0, 0);
             this.gvRecap.Name = "gvRecap";
             this.gvRecap.ReadOnly = true;
-            this.gvRecap.Size = new System.Drawing.Size(1736, 440);
+            this.gvRecap.Size = new System.Drawing.Size(1732, 367);
             this.gvRecap.TabIndex = 0;
             this.gvRecap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvRecap_CellContentClick);
             // 
-            // contextMenuStrip1
+            // panel3
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(113, 26);
+            this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel3.Controls.Add(this.btnCheckSup);
+            this.panel3.Controls.Add(this.btnCheckOM);
+            this.panel3.Controls.Add(this.btnCheckHO);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(4, 4);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1736, 69);
+            this.panel3.TabIndex = 1;
             // 
-            // toolStripMenuItem1
+            // btnCheckHO
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
-            this.toolStripMenuItem1.Text = "Delete Entry";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.btnCheckHO.Location = new System.Drawing.Point(758, 40);
+            this.btnCheckHO.Name = "btnCheckHO";
+            this.btnCheckHO.Size = new System.Drawing.Size(75, 23);
+            this.btnCheckHO.TabIndex = 0;
+            this.btnCheckHO.Text = "Check All";
+            this.btnCheckHO.UseVisualStyleBackColor = true;
+            this.btnCheckHO.Click += new System.EventHandler(this.btnCheckHO_Click);
+            // 
+            // btnCheckOM
+            // 
+            this.btnCheckOM.Location = new System.Drawing.Point(659, 40);
+            this.btnCheckOM.Name = "btnCheckOM";
+            this.btnCheckOM.Size = new System.Drawing.Size(75, 23);
+            this.btnCheckOM.TabIndex = 1;
+            this.btnCheckOM.Text = "Check All";
+            this.btnCheckOM.UseVisualStyleBackColor = true;
+            this.btnCheckOM.Click += new System.EventHandler(this.btnCheckOM_Click);
+            // 
+            // btnCheckSup
+            // 
+            this.btnCheckSup.Location = new System.Drawing.Point(564, 40);
+            this.btnCheckSup.Name = "btnCheckSup";
+            this.btnCheckSup.Size = new System.Drawing.Size(75, 23);
+            this.btnCheckSup.TabIndex = 2;
+            this.btnCheckSup.Text = "Check All";
+            this.btnCheckSup.UseVisualStyleBackColor = true;
+            this.btnCheckSup.Click += new System.EventHandler(this.btnCheckSup_Click);
+            // 
+            // panel4
+            // 
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel4.Controls.Add(this.gvRecap);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(4, 73);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1736, 371);
+            this.panel4.TabIndex = 2;
             // 
             // fmMain
             // 
@@ -679,9 +740,11 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvRecap)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -750,6 +813,11 @@
         private System.Windows.Forms.ToolStripMenuItem employeesToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btnCheckSup;
+        private System.Windows.Forms.Button btnCheckOM;
+        private System.Windows.Forms.Button btnCheckHO;
+        private System.Windows.Forms.Panel panel4;
     }
 }
 

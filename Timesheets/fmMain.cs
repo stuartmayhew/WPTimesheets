@@ -35,7 +35,7 @@ namespace Timesheets
         {
             Application.Run(new fmSplash());
         }
-
+        #region Main
         private void fmMain_Load(object sender, EventArgs e)
         {
             isLoading = true;
@@ -56,14 +56,16 @@ namespace Timesheets
             cbCompany.SelectedIndex = 0;
             FillGridView();
         }
+        #endregion
 
+        #region DateTime
         private void dtpWeekEnding_ValueChanged(object sender, EventArgs e)
         {
             lblWeekEnding.Text = CommonProcs.GetWeekEnding(dtpWeekEnding.Value).ToShortDateString();
         }
 
-
-
+        #endregion
+        #region Util
         private string GetCurrentCompany()
         {
             switch (cbCompany.SelectedIndex)
@@ -93,7 +95,19 @@ namespace Timesheets
                     return "AA";
             }
         }
+        private void cbBranch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadBranchCombos();
+        }
 
+
+        private void cbEmployee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isLoading)
+                FillGridView();
+        }
+        #endregion
+        #region Combos
         private void LoadBranchCombos() 
         {
             string companyStr = GetCurrentCompany();
@@ -147,7 +161,8 @@ namespace Timesheets
             cbEmployee.DisplayMember = "key";
             cbEmployee.ValueMember = "value";
         }
-
+        #endregion
+        #region Menu
         private void refreshEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             QBDataPump pump = new QBDataPump(statusStrip1);
@@ -172,6 +187,44 @@ namespace Timesheets
             pump.PumpClass(GetCurrentCompany());
         }
 
+        private void cbFac_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isLoading)
+            {
+                int selFac = int.Parse(cbFac.SelectedValue.ToString());
+                List<int> facID = new List<int>();
+                facID.Add(selFac);
+                LoadAreaCombo(facID);
+            }
+        }
+
+        private void setupFacilityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fmFacility fFac = new fmFacility();
+            fFac.ShowDialog();
+            LoadFacilityCombo(GetCurrentBranch());
+        }
+
+        private void setupAreaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fmArea fArea = new fmArea();
+            fArea.ShowDialog();
+            LoadAreaCombo(CommonProcs.GetFacList(GetCurrentBranch()));
+        }
+
+        private void setupLoginsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CommonProcs.CheckAccessLevel() < 10)
+            {
+                MessageBox.Show("Not Authorized to View/Edit logins");
+                return;
+            }
+
+            fmLoginEdit fLogEdit = new fmLoginEdit();
+            fLogEdit.ShowDialog();
+        }
+        #endregion
+        #region Timesheet
         private void btnAddHours_Click(object sender, EventArgs e)
         {
             TimeSheet ts = new TimeSheet();
@@ -221,6 +274,79 @@ namespace Timesheets
             gvTimesheet.DataSource = gridRows;
         }
 
+        private void btnAddNote_Click(object sender, EventArgs e)
+        {
+            fmNote fNote = new fmNote();
+            fNote.ShowDialog();
+            if (fNote.noteText != string.Empty)
+                noteText = fNote.noteText;
+        }
+
+        private void btnShowActive_Click(object sender, EventArgs e)
+        {
+            if (showActive)
+            {
+                btnShowActive.Text = "Show Active";
+                LoadEmployeeCombo(GetCurrentCompany(), GetCurrentBranch(), false);
+                showActive = false;
+            }
+            else
+            {
+                btnShowActive.Text = "Show All";
+                LoadEmployeeCombo(GetCurrentCompany(), GetCurrentBranch(), true);
+                showActive = true;
+            }
+        }
+
+        private void btnShowActiveCust_Click(object sender, EventArgs e)
+        {
+            if (showActiveCust)
+            {
+                btnShowActiveCust.Text = "Show Active";
+                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), false);
+                showActiveCust = false;
+            }
+            else
+            {
+                btnShowActiveCust.Text = "Show All";
+                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), true);
+                showActiveCust = true;
+            }
+        }
+        private void cbCompany_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isLoading)
+                LoadBranchCombos();
+        }
+
+        private void btnAppRequest_Click(object sender, EventArgs e)
+        {
+            fmRequestApproval rmReq = new fmRequestApproval();
+            rmReq.Show();
+        }
+
+        private void gvTimesheet_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 8 && e.ColumnIndex != 9)
+                return;
+            string colName = "RegHours";
+            if (e.ColumnIndex == 8)
+                colName = "OTHours";
+            string newValue = gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            string timeSheetID = gvTimesheet.Rows[e.RowIndex].Cells[0].Value.ToString();
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
+            {
+                string sql = "UPDATE Timesheet SET " + colName + " = " + newValue + " WHERE TimesheetID=" + timeSheetID;
+                dg.RunCommand(sql);
+            }
+        }
+
+        private void tbHours_Enter(object sender, EventArgs e)
+        {
+            tbHours.Text = "";
+        }
+        #endregion
+        #region Recap
         private void FillTotalsView()
         {
             gvRecap.Columns.Clear();
@@ -295,9 +421,23 @@ namespace Timesheets
 
         private void gvRecap_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 8)
+            if (e.ColumnIndex == 5)
             {
-                if (CommonProcs.CheckAccessLevel() < 5)
+                UncheckApproval(e);
+            }
+            else if (e.ColumnIndex == 6)
+            {
+                UncheckApproval(e);
+            }
+            else if (e.ColumnIndex == 7)
+            {
+                UncheckApproval(e);
+            }
+
+
+            else if (e.ColumnIndex == 8)
+            {
+                if (CommonProcs.CheckAccessLevel() < 9)
                 {
                     MessageBox.Show("Not Authorized to approve Timesheet");
                     return;
@@ -308,7 +448,7 @@ namespace Timesheets
             }
             else if (e.ColumnIndex == 9)
             {
-                if (CommonProcs.CheckAccessLevel() < 5)
+                if (CommonProcs.CheckAccessLevel() < 10)
                 {
                     MessageBox.Show("Not Authorized to approve Timesheet");
                     return;
@@ -318,7 +458,7 @@ namespace Timesheets
             }
             else if (e.ColumnIndex == 10)
             {
-                if (CommonProcs.CheckAccessLevel() < 5)
+                if (CommonProcs.CheckAccessLevel() != 10)
                 {
                     MessageBox.Show("Not Authorized to approve Timesheet");
                     return;
@@ -335,6 +475,34 @@ namespace Timesheets
             fmTimesheetView fTV = new fmTimesheetView();
             fTV.Show();
         }
+
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (gvTimesheet.SelectedRows.Count < 1)
+            {
+                MessageBox.Show("Please select the entry before trying to delete");
+                return;
+            }
+            string TimelineID = gvTimesheet.SelectedRows[0].Cells[0].Value.ToString();
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
+            {
+                string sql = "DELETE FROM Timesheet  WHERE TimesheetID=" + TimelineID;
+                dg.RunCommand(sql);
+            }
+            FillGridView();
+        }
+        #endregion
+
+
+
+        private void tbTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tbTabs.SelectedIndex == 1)
+                FillTotalsView();
+        }
+
+        #region Approval
 
         private void ApproveByHO(DataGridViewCellEventArgs e)
         {
@@ -367,142 +535,97 @@ namespace Timesheets
 
         }
 
-        private void cbBranch_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void btnCheckSup_Click(object sender, EventArgs e)
         {
-            LoadBranchCombos();
+            CheckAll("SUP");
         }
 
-        private void btnAddNote_Click(object sender, EventArgs e)
+        private void btnCheckOM_Click(object sender, EventArgs e)
         {
-            fmNote fNote = new fmNote();
-            fNote.ShowDialog();
-            if (fNote.noteText != string.Empty)
-                noteText = fNote.noteText;
+            CheckAll("OM");
         }
 
-        private void cbEmployee_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnCheckHO_Click(object sender, EventArgs e)
         {
-            if (!isLoading)
-                FillGridView();
+            CheckAll("HO");
         }
-
-        private void btnShowActive_Click(object sender, EventArgs e)
+        private void CheckAll(string btnName)
         {
-            if (showActive)
+            switch (btnName)
             {
-                btnShowActive.Text = "Show Active";
-                LoadEmployeeCombo(GetCurrentCompany(), GetCurrentBranch(), false);
-                showActive = false;
+                case "SUP":
+                    if (CommonProcs.CheckAccessLevel() < 9)
+                    {
+                        MessageBox.Show("Not Authorized to approve Timesheet");
+                        return;
+                    }
+                    break;
+                case "OM":
+                    if (CommonProcs.CheckAccessLevel() < 10)
+                    {
+                        MessageBox.Show("Not Authorized to approve Timesheet");
+                        return;
+                    }
+
+                    break;
+                case "HO":
+                    if (CommonProcs.CheckAccessLevel() != 10)
+                    {
+                        MessageBox.Show("Not Authorized to approve Timesheet");
+                        return;
+                    }
+
+                    break;
             }
-            else
+            ApproveAll(btnName);
+            FillTotalsView();
+        }
+
+        private void ApproveAll(string btnName)
+        {
+            string appField = "SupApprove";
+            switch (btnName)
             {
-                btnShowActive.Text = "Show All";
-                LoadEmployeeCombo(GetCurrentCompany(), GetCurrentBranch(), true);
-                showActive = true;
+                case "OM":
+                    appField = "OMApprove";
+                    break;
+                case "HO":
+                    appField = "HOApprove";
+                    break;
             }
-        }
-
-        private void btnShowActiveCust_Click(object sender, EventArgs e)
-        {
-            if (showActiveCust)
-            {
-                btnShowActiveCust.Text = "Show Active";
-                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), false);
-                showActiveCust = false;
-            }
-            else
-            {
-                btnShowActiveCust.Text = "Show All";
-                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), true);
-                showActiveCust = true;
-            }
-        }
-
-        private void tbTabs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tbTabs.SelectedIndex == 1)
-                FillTotalsView();
-        }
-
-        private void cbCompany_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isLoading)
-                LoadBranchCombos();
-        }
-
-        private void btnAppRequest_Click(object sender, EventArgs e)
-        {
-            fmRequestApproval rmReq = new fmRequestApproval();
-            rmReq.Show();
-        }
-
-        private void cbFac_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!isLoading)
-            {
-                int selFac = int.Parse(cbFac.SelectedValue.ToString());
-                List<int> facID = new List<int>();
-                facID.Add(selFac);
-                LoadAreaCombo(facID);
-            }
-        }
-
-        private void setupFacilityToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fmFacility fFac = new fmFacility();
-            fFac.ShowDialog();
-            LoadFacilityCombo(GetCurrentBranch());
-        }
-
-        private void setupAreaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fmArea fArea = new fmArea();
-            fArea.ShowDialog();
-            LoadAreaCombo(CommonProcs.GetFacList(GetCurrentBranch()));
-        }
-
-        private void setupLoginsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (CommonProcs.CheckAccessLevel() < 10)
-            {
-                MessageBox.Show("Not Authorized to View/Edit logins");
-                return;
-            }
-
-            fmLoginEdit fLogEdit = new fmLoginEdit();
-            fLogEdit.ShowDialog();
-        }
-
-        private void gvTimesheet_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex != 8 && e.ColumnIndex != 9)
-                return;
-            string colName = "RegHours";
-            if (e.ColumnIndex == 8)
-                colName = "OTHours";
-            string newValue = gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            string timeSheetID = gvTimesheet.Rows[e.RowIndex].Cells[0].Value.ToString();
+            string sql = "UPDATE Timesheet SET " + appField + "= 1";
             using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
             {
-                string sql = "UPDATE Timesheet SET " + colName + " = " + newValue + " WHERE TimesheetID=" + timeSheetID;
                 dg.RunCommand(sql);
             }
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void UncheckApproval(DataGridViewCellEventArgs e)
         {
-            if (gvTimesheet.SelectedRows.Count() < 1)
+            string empID = gvRecap.Rows[e.RowIndex].Cells[0].Value.ToString();
+            string fieldVal = "1";
+            bool val = (bool)gvRecap.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            if (val)
+                fieldVal = "0";
+            string appField = "SupApprove";
+            switch (e.ColumnIndex)
             {
-                MessageBox.Show("Please select the entry before trying to delete");
-                return;
+                case 6:
+                    appField = "OMApprove";
+                    break;
+                case 7:
+                    appField = "HOApprove";
+                    break;
             }
-            string TimelineID = gvTimesheet.SelectedRows[0].Cells[0].Value.ToString();
+            string sql = "UPDATE Timesheet SET " + appField + "= " + fieldVal;
+            sql += " WHERE EmployeeID = " + empID;
             using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
             {
-                string sql = "DELETE FROM Timesheet  WHERE TimesheetID=" + TimelineID;
                 dg.RunCommand(sql);
             }
-            FillGridView();
+            FillTotalsView();
         }
+        #endregion
     }
 }
