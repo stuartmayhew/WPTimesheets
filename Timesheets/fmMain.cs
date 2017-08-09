@@ -23,6 +23,8 @@ namespace Timesheets
         bool isLoading = false;
         bool showActive = false;
         bool showActiveCust = false;
+        bool supCheckedAll = false;
+        bool OMCheckedAll = false;
         public fmMain()
         {
             Thread t = new Thread(new ThreadStart(SplashStart));
@@ -40,7 +42,8 @@ namespace Timesheets
         {
             isLoading = true;
             fmLogin fLogin = new fmLogin();
-            DialogResult = fLogin.ShowDialog();
+            if (!System.IO.File.Exists("user.txt"))
+                DialogResult = fLogin.ShowDialog();
             lblWeekEnding.Text = CommonProcs.GetWeekEnding(DateTime.Now).ToShortDateString();
             dtpWeekEnding.Value = CommonProcs.GetWeekEnding(DateTime.Now);
             userName = MyConfig.ReadValue("firstName") + " " + MyConfig.ReadValue("lastName");
@@ -54,7 +57,28 @@ namespace Timesheets
 
             isLoading = false;
             cbCompany.SelectedIndex = 0;
+            tbTabs.TabPages[1].Enabled = CheckCompleteForRecap();
+            SetAccessFromAccessLevel(accessLevel);
             FillGridView();
+        }
+
+        private void SetAccessFromAccessLevel(int accessLevel)
+        {
+            
+        }
+
+        private bool CheckCompleteForRecap()
+        {
+            DateTime weekEnding = this.dtpWeekEnding.Value;
+            string sql = "SELECT * FROM Timesheet ";
+            sql += " WHERE WeekEnding = '" + weekEnding.ToShortDateString() + "' ";
+            sql += "AND Complete = 0";
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
+            {
+                if (dg.HasData(sql))
+                    return false;
+            }
+            return true;
         }
         #endregion
 
@@ -62,6 +86,7 @@ namespace Timesheets
         private void dtpWeekEnding_ValueChanged(object sender, EventArgs e)
         {
             lblWeekEnding.Text = CommonProcs.GetWeekEnding(dtpWeekEnding.Value).ToShortDateString();
+            tbTabs.TabPages[1].Enabled = CheckCompleteForRecap();
         }
 
         #endregion
@@ -327,11 +352,9 @@ namespace Timesheets
 
         private void gvTimesheet_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex != 8 && e.ColumnIndex != 9)
+            if (gvTimesheet.Columns[e.ColumnIndex].Name != "OTHours" && gvTimesheet.Columns[e.ColumnIndex].Name != "RegHours")
                 return;
-            string colName = "RegHours";
-            if (e.ColumnIndex == 8)
-                colName = "OTHours";
+            string colName = gvTimesheet.Columns[e.ColumnIndex].Name;
             string newValue = gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
             string timeSheetID = gvTimesheet.Rows[e.RowIndex].Cells[0].Value.ToString();
             using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
@@ -359,32 +382,11 @@ namespace Timesheets
                     tot.SupApproved = true;
                 if (CheckApproved(tot, "OM"))
                     tot.OMApproved = true;
-                if (CheckApproved(tot, "HO"))
-                    tot.HOApproved = true;
+                //if (CheckApproved(tot, "HO"))
+                //    tot.HOApproved = true;
 
             }
             gvRecap.DataSource = totals;
-
-            DataGridViewButtonColumn sAppColumn = new DataGridViewButtonColumn();
-            sAppColumn.HeaderText = "Super Appr";
-            sAppColumn.Name = "approve";
-            sAppColumn.Text = "Approve";
-            sAppColumn.UseColumnTextForButtonValue = true;
-            gvRecap.Columns.Add(sAppColumn);
-
-            DataGridViewButtonColumn omAppColumn = new DataGridViewButtonColumn();
-            omAppColumn.HeaderText = "Off Mgr Appr";
-            omAppColumn.Name = "approve";
-            omAppColumn.Text = "Approve";
-            omAppColumn.UseColumnTextForButtonValue = true;
-            gvRecap.Columns.Add(omAppColumn);
-
-            DataGridViewButtonColumn hoAppColumn = new DataGridViewButtonColumn();
-            hoAppColumn.HeaderText = "Home Office Appr";
-            hoAppColumn.Name = "approve";
-            hoAppColumn.Text = "Approve";
-            hoAppColumn.UseColumnTextForButtonValue = true;
-            gvRecap.Columns.Add(hoAppColumn);
 
             DataGridViewButtonColumn viewColumn = new DataGridViewButtonColumn();
             viewColumn.HeaderText = "View";
@@ -421,21 +423,21 @@ namespace Timesheets
 
         private void gvRecap_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 5)
+            if (gvRecap.Columns[e.ColumnIndex].Name == "SupApproved")
             {
                 UncheckApproval(e);
             }
-            else if (e.ColumnIndex == 6)
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "OMApproved")
             {
                 UncheckApproval(e);
             }
-            else if (e.ColumnIndex == 7)
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "HOApproved")
             {
                 UncheckApproval(e);
             }
 
 
-            else if (e.ColumnIndex == 8)
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "SupApproved")
             {
                 if (CommonProcs.CheckAccessLevel() < 9)
                 {
@@ -446,7 +448,7 @@ namespace Timesheets
                 ApproveBySuper(e);
                 FillTotalsView();
             }
-            else if (e.ColumnIndex == 9)
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "OMApproved")
             {
                 if (CommonProcs.CheckAccessLevel() < 10)
                 {
@@ -456,7 +458,7 @@ namespace Timesheets
                 ApproveByOM(e);
                 FillTotalsView();
             }
-            else if (e.ColumnIndex == 10)
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "HOApproved")
             {
                 if (CommonProcs.CheckAccessLevel() != 10)
                 {
@@ -466,7 +468,7 @@ namespace Timesheets
                 ApproveByHO(e);
                 FillTotalsView();
             }
-            else if (e.ColumnIndex == 11)
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "view")
                 ShowTimesheet();
         }
 
@@ -536,22 +538,25 @@ namespace Timesheets
         }
 
 
-        private void btnCheckSup_Click(object sender, EventArgs e)
-        {
-            CheckAll("SUP");
-        }
+        //private void btnCheckSup_Click(object sender, EventArgs e)
+        //{
+        //    CheckAll("SUP");
+        //}
 
-        private void btnCheckOM_Click(object sender, EventArgs e)
-        {
-            CheckAll("OM");
-        }
+        //private void btnCheckOM_Click(object sender, EventArgs e)
+        //{
+        //    CheckAll("OM");
+        //}
 
-        private void btnCheckHO_Click(object sender, EventArgs e)
+        //private void btnCheckHO_Click(object sender, EventArgs e)
+        //{
+        //    CheckAll("HO");
+        //}
+        private void CheckAll(string btnName,bool checkedAll)
         {
-            CheckAll("HO");
-        }
-        private void CheckAll(string btnName)
-        {
+            string checkVal = "1";
+            if (checkedAll)
+                checkVal = "0";
             switch (btnName)
             {
                 case "SUP":
@@ -569,32 +574,25 @@ namespace Timesheets
                     }
 
                     break;
-                case "HO":
-                    if (CommonProcs.CheckAccessLevel() != 10)
-                    {
-                        MessageBox.Show("Not Authorized to approve Timesheet");
-                        return;
-                    }
+                //case "HO":
+                //    if (CommonProcs.CheckAccessLevel() != 10)
+                //    {
+                //        MessageBox.Show("Not Authorized to approve Timesheet");
+                //        return;
+                //    }
 
-                    break;
+                //    break;
             }
-            ApproveAll(btnName);
+            ApproveAll(btnName,checkVal);
             FillTotalsView();
         }
 
-        private void ApproveAll(string btnName)
+        private void ApproveAll(string btnName,string val)
         {
             string appField = "SupApprove";
-            switch (btnName)
-            {
-                case "OM":
-                    appField = "OMApprove";
-                    break;
-                case "HO":
-                    appField = "HOApprove";
-                    break;
-            }
-            string sql = "UPDATE Timesheet SET " + appField + "= 1";
+            if (btnName == "OM")
+                appField = "OMApprove";
+            string sql = "UPDATE Timesheet SET " + appField + "= " + val;
             using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
             {
                 dg.RunCommand(sql);
@@ -603,18 +601,20 @@ namespace Timesheets
 
         private void UncheckApproval(DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0)
+                return;
             string empID = gvRecap.Rows[e.RowIndex].Cells[0].Value.ToString();
             string fieldVal = "1";
             bool val = (bool)gvRecap.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
             if (val)
                 fieldVal = "0";
             string appField = "SupApprove";
-            switch (e.ColumnIndex)
+            switch (gvRecap.Columns[e.ColumnIndex].Name)
             {
-                case 6:
+                case "OMApproved":
                     appField = "OMApprove";
                     break;
-                case 7:
+                case "HOApproved":
                     appField = "HOApprove";
                     break;
             }
@@ -627,5 +627,27 @@ namespace Timesheets
             FillTotalsView();
         }
         #endregion
+
+        private void gvRecap_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (gvRecap.Columns[e.ColumnIndex].Name == "SupApproved")
+            {
+                CheckAll("SUP", supCheckedAll);
+                supCheckedAll = !supCheckedAll;
+            }
+            else if (gvRecap.Columns[e.ColumnIndex].Name == "OMApproved")
+            {
+                CheckAll("OM", OMCheckedAll);
+                OMCheckedAll = !OMCheckedAll;
+            }
+        }
+
+        private void employeesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fmEmployeeList fEList = new fmEmployeeList();
+            fEList.currBranch = GetCurrentBranch();
+            fEList.currCompany = GetCurrentCompany();
+            fEList.Show();
+        }
     }
 }

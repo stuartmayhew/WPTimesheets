@@ -31,10 +31,17 @@ namespace Timesheets.Helpers
                     {
                         if (!NotMapped.Contains(property.Name))
                         {
-                            if (!reader.IsDBNull(reader.GetOrdinal(property.Name)))
+                            try
                             {
-                                Type convertTo = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-                                property.SetValue(item, Convert.ChangeType(reader[property.Name], convertTo), null);
+                                if (!reader.IsDBNull(reader.GetOrdinal(property.Name)))
+                                {
+                                    Type convertTo = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                                    property.SetValue(item, Convert.ChangeType(reader[property.Name], convertTo), null);
+                                }
+                            }
+                            catch
+                            {
+
                             }
                         }
                     }
@@ -69,10 +76,17 @@ namespace Timesheets.Helpers
                     {
                         if (!NotMapped.Contains(property.Name))
                         {
-                            if (!reader.IsDBNull(reader.GetOrdinal(property.Name)))
+                            try
                             {
-                                Type convertTo = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-                                property.SetValue(item, Convert.ChangeType(reader[property.Name], convertTo), null);
+                                if (!reader.IsDBNull(reader.GetOrdinal(property.Name)))
+                                {
+                                    Type convertTo = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                                    property.SetValue(item, Convert.ChangeType(reader[property.Name], convertTo), null);
+                                }
+                            }
+                            catch
+                            {
+
                             }
                         }
                     }

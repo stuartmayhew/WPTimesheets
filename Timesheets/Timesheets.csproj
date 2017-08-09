@@ -74,6 +74,18 @@
     <Compile Include="fmArea.Designer.cs">
       <DependentUpon>fmArea.cs</DependentUpon>
     </Compile>
+    <Compile Include="fmEmpEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmEmpEdit.Designer.cs">
+      <DependentUpon>fmEmpEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmEmployeeList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmEmployeeList.Designer.cs">
+      <DependentUpon>fmEmployeeList.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmFacility.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +164,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="fmArea.resx">
       <DependentUpon>fmArea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmEmpEdit.resx">
+      <DependentUpon>fmEmpEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmEmployeeList.resx">
+      <DependentUpon>fmEmployeeList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmFacility.resx">
       <DependentUpon>fmFacility.cs</DependentUpon>

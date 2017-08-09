@@ -82,12 +82,10 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.gvRecap = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnCheckHO = new System.Windows.Forms.Button();
-            this.btnCheckOM = new System.Windows.Forms.Button();
-            this.btnCheckSup = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -97,9 +95,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvRecap)).BeginInit();
             this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -128,29 +126,30 @@
             // setupFacilityToolStripMenuItem
             // 
             this.setupFacilityToolStripMenuItem.Name = "setupFacilityToolStripMenuItem";
-            this.setupFacilityToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.setupFacilityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.setupFacilityToolStripMenuItem.Text = "Facilities";
             this.setupFacilityToolStripMenuItem.Click += new System.EventHandler(this.setupFacilityToolStripMenuItem_Click);
             // 
             // setupAreaToolStripMenuItem
             // 
             this.setupAreaToolStripMenuItem.Name = "setupAreaToolStripMenuItem";
-            this.setupAreaToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.setupAreaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.setupAreaToolStripMenuItem.Text = "Areas";
             this.setupAreaToolStripMenuItem.Click += new System.EventHandler(this.setupAreaToolStripMenuItem_Click);
             // 
             // setupLoginsToolStripMenuItem
             // 
             this.setupLoginsToolStripMenuItem.Name = "setupLoginsToolStripMenuItem";
-            this.setupLoginsToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.setupLoginsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.setupLoginsToolStripMenuItem.Text = "Logins";
             this.setupLoginsToolStripMenuItem.Click += new System.EventHandler(this.setupLoginsToolStripMenuItem_Click);
             // 
             // employeesToolStripMenuItem
             // 
             this.employeesToolStripMenuItem.Name = "employeesToolStripMenuItem";
-            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.employeesToolStripMenuItem.Text = "Employees";
+            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.employeesToolStripMenuItem.Text = "Employee";
+            this.employeesToolStripMenuItem.Click += new System.EventHandler(this.employeesToolStripMenuItem_Click);
             // 
             // quickbooksDataToolStripMenuItem
             // 
@@ -644,6 +643,16 @@
             this.tabPage2.Text = "Recap";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // panel4
+            // 
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel4.Controls.Add(this.gvRecap);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(4, 73);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1736, 371);
+            this.panel4.TabIndex = 2;
+            // 
             // gvRecap
             // 
             this.gvRecap.AllowUserToAddRows = false;
@@ -657,58 +666,26 @@
             this.gvRecap.Size = new System.Drawing.Size(1732, 367);
             this.gvRecap.TabIndex = 0;
             this.gvRecap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvRecap_CellContentClick);
+            this.gvRecap.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvRecap_ColumnHeaderMouseClick);
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel3.Controls.Add(this.btnCheckSup);
-            this.panel3.Controls.Add(this.btnCheckOM);
-            this.panel3.Controls.Add(this.btnCheckHO);
+            this.panel3.Controls.Add(this.label12);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(4, 4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1736, 69);
             this.panel3.TabIndex = 1;
             // 
-            // btnCheckHO
+            // label12
             // 
-            this.btnCheckHO.Location = new System.Drawing.Point(758, 40);
-            this.btnCheckHO.Name = "btnCheckHO";
-            this.btnCheckHO.Size = new System.Drawing.Size(75, 23);
-            this.btnCheckHO.TabIndex = 0;
-            this.btnCheckHO.Text = "Check All";
-            this.btnCheckHO.UseVisualStyleBackColor = true;
-            this.btnCheckHO.Click += new System.EventHandler(this.btnCheckHO_Click);
-            // 
-            // btnCheckOM
-            // 
-            this.btnCheckOM.Location = new System.Drawing.Point(659, 40);
-            this.btnCheckOM.Name = "btnCheckOM";
-            this.btnCheckOM.Size = new System.Drawing.Size(75, 23);
-            this.btnCheckOM.TabIndex = 1;
-            this.btnCheckOM.Text = "Check All";
-            this.btnCheckOM.UseVisualStyleBackColor = true;
-            this.btnCheckOM.Click += new System.EventHandler(this.btnCheckOM_Click);
-            // 
-            // btnCheckSup
-            // 
-            this.btnCheckSup.Location = new System.Drawing.Point(564, 40);
-            this.btnCheckSup.Name = "btnCheckSup";
-            this.btnCheckSup.Size = new System.Drawing.Size(75, 23);
-            this.btnCheckSup.TabIndex = 2;
-            this.btnCheckSup.Text = "Check All";
-            this.btnCheckSup.UseVisualStyleBackColor = true;
-            this.btnCheckSup.Click += new System.EventHandler(this.btnCheckSup_Click);
-            // 
-            // panel4
-            // 
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel4.Controls.Add(this.gvRecap);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(4, 73);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1736, 371);
-            this.panel4.TabIndex = 2;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(541, 40);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(272, 17);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "Click Column Header to check/uncheck All";
             // 
             // fmMain
             // 
@@ -742,9 +719,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvRecap)).EndInit();
             this.panel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -814,10 +792,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button btnCheckSup;
-        private System.Windows.Forms.Button btnCheckOM;
-        private System.Windows.Forms.Button btnCheckHO;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label12;
     }
 }
 

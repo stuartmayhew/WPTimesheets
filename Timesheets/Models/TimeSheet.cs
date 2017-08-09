@@ -26,5 +26,6 @@ namespace Timesheets.Models
         public bool SupApprove { get; set; }
         public bool OMApprove { get; set; }
         public bool HOApprove { get; set; }
+        public bool Complete { get; set; }
     }
 }

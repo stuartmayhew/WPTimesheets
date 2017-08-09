@@ -13,15 +13,15 @@ namespace Timesheets.Models
         [Key]
         public int EmployeeID { get; set; }
         public string EmpName { get; set; }
+        public DateTime WeekEnding { get; set; }
         public decimal RegHours { get; set; }
         public decimal OTHours { get; set; }
-        public DateTime WeekEnding { get; set; }
         [NotMapped]
         public bool SupApproved { get; set; }
         [NotMapped]
         public bool OMApproved { get; set; }
-        [NotMapped]
-        public bool HOApproved { get; set; }
+        //[NotMapped]
+        //public bool HOApproved { get; set; }
 
 
 

@@ -31,5 +31,6 @@ namespace Timesheets.Models
         public string PayrollInfoClassRefListID { get; set; }
         public string PayrollInfoClassRefFullName { get; set; }
         public string PayrollInfoUseTimeDataToCreatePaychecks { get; set; }
+        public bool TSApprover { get; set; }
     }
 }
