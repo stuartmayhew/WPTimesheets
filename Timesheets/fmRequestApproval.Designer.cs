@@ -39,6 +39,7 @@
             this.lbRequest.Name = "lbRequest";
             this.lbRequest.Size = new System.Drawing.Size(478, 603);
             this.lbRequest.TabIndex = 0;
+            this.lbRequest.SelectedIndexChanged += new System.EventHandler(this.lbRequest_SelectedIndexChanged);
             // 
             // fmRequestApproval
             // 

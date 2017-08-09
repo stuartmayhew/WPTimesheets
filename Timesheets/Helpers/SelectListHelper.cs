@@ -119,6 +119,21 @@ namespace Timesheets.Helpers
             return items;
         }
 
+        public static List<ComboBoxItem> GetStateList()
+        {
+            List<ComboBoxItem> items = new List<ComboBoxItem>();
+            string sql = "SELECT * FROM USStates ORDER BY StateName ";
+            List<USStates> stateList = new ReaderToModel<USStates>().CreateList(sql, CommonProcs.WCompanyConnStr);
+            foreach (var state in stateList)
+            {
+                ComboBoxItem cbItem = new ComboBoxItem();
+                cbItem.strValue = state.StateAbbr;
+                cbItem.key = state.StateName;
+                items.Add(cbItem);
+            }
+            return items;
+        }
+
         public static void AutoComplete(ComboBox cb,KeyPressEventArgs e, bool blnLimitToList = false)
         {
             string strFindStr = "";

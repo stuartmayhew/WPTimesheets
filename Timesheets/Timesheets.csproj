@@ -160,6 +160,7 @@
     <Compile Include="Models\TimeSheet.cs" />
     <Compile Include="Models\TimesheetEntryGrid.cs" />
     <Compile Include="Models\TimesheetTotals.cs" />
+    <Compile Include="Models\USStates.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="fmArea.resx">

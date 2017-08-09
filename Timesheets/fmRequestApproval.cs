@@ -23,7 +23,7 @@ namespace Timesheets
         private void fmRequestApproval_Load(object sender, EventArgs e)
         {
             List<ApprRequest> requests = new List<ApprRequest>();
-            string sql = "SELECT TOP(10) * FROM Employee ";
+            string sql = "SELECT * FROM Employee WHERE TSApprover = 1";
             List<Employee> emps = new ReaderToModel<Employee>().CreateList(sql, CommonProcs.WCompanyConnStr);
             foreach (var emp in emps)
             {
@@ -32,6 +32,11 @@ namespace Timesheets
                 req.employeeName = emp.LastName + "," + emp.FirstName;
                 lbRequest.Items.Add(req.employeeName);
             }
+        }
+
+        private void lbRequest_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

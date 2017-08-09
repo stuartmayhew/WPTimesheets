@@ -60,20 +60,21 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(863, 105);
+            this.panel1.Size = new System.Drawing.Size(719, 155);
             this.panel1.TabIndex = 1;
             // 
             // tbSearch
             // 
-            this.tbSearch.Location = new System.Drawing.Point(280, 72);
+            this.tbSearch.Location = new System.Drawing.Point(88, 85);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(323, 20);
             this.tbSearch.TabIndex = 16;
+            this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(220, 76);
+            this.label2.Location = new System.Drawing.Point(28, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
             this.label2.TabIndex = 15;
@@ -81,17 +82,18 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(28, 71);
+            this.btnAdd.Location = new System.Drawing.Point(444, 71);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(117, 23);
+            this.btnAdd.Size = new System.Drawing.Size(117, 49);
             this.btnAdd.TabIndex = 14;
             this.btnAdd.Text = "Add New";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(569, 21);
+            this.label1.Location = new System.Drawing.Point(405, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 13;
@@ -104,7 +106,7 @@
             "Active",
             "InActive",
             "ALL"});
-            this.cbShow.Location = new System.Drawing.Point(623, 17);
+            this.cbShow.Location = new System.Drawing.Point(408, 38);
             this.cbShow.Name = "cbShow";
             this.cbShow.Size = new System.Drawing.Size(121, 21);
             this.cbShow.TabIndex = 12;
@@ -113,7 +115,7 @@
             // Company
             // 
             this.Company.AutoSize = true;
-            this.Company.Location = new System.Drawing.Point(277, 21);
+            this.Company.Location = new System.Drawing.Point(207, 21);
             this.Company.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Company.Name = "Company";
             this.Company.Size = new System.Drawing.Size(51, 13);
@@ -136,7 +138,7 @@
             this.cbCompany.Items.AddRange(new object[] {
             "Non-Union",
             "Union"});
-            this.cbCompany.Location = new System.Drawing.Point(365, 17);
+            this.cbCompany.Location = new System.Drawing.Point(210, 38);
             this.cbCompany.Margin = new System.Windows.Forms.Padding(4);
             this.cbCompany.Name = "cbCompany";
             this.cbCompany.Size = new System.Drawing.Size(160, 21);
@@ -151,7 +153,7 @@
             "00-Corporate",
             "01-Theodore",
             "02-Tuscaloosa"});
-            this.cbBranch.Location = new System.Drawing.Point(96, 17);
+            this.cbBranch.Location = new System.Drawing.Point(28, 38);
             this.cbBranch.Margin = new System.Windows.Forms.Padding(4);
             this.cbBranch.Name = "cbBranch";
             this.cbBranch.Size = new System.Drawing.Size(160, 21);
@@ -162,20 +164,24 @@
             // 
             this.panel2.Controls.Add(this.gvEmpList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 105);
+            this.panel2.Location = new System.Drawing.Point(0, 155);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(863, 663);
+            this.panel2.Size = new System.Drawing.Size(719, 613);
             this.panel2.TabIndex = 2;
             // 
             // gvEmpList
             // 
+            this.gvEmpList.AllowUserToAddRows = false;
+            this.gvEmpList.AllowUserToDeleteRows = false;
+            this.gvEmpList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.gvEmpList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvEmpList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvEmpList.Location = new System.Drawing.Point(0, 0);
             this.gvEmpList.MultiSelect = false;
             this.gvEmpList.Name = "gvEmpList";
             this.gvEmpList.ReadOnly = true;
-            this.gvEmpList.Size = new System.Drawing.Size(863, 663);
+            this.gvEmpList.RowHeadersWidth = 80;
+            this.gvEmpList.Size = new System.Drawing.Size(719, 613);
             this.gvEmpList.TabIndex = 1;
             this.gvEmpList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gvEmpList_DataBindingComplete);
             this.gvEmpList.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvEmpList_RowHeaderMouseDoubleClick);
@@ -184,7 +190,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 768);
+            this.ClientSize = new System.Drawing.Size(719, 768);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

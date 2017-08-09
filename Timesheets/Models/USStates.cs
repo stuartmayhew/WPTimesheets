@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Timesheets.Models
 {
-    public class ComboBoxItem
+    public class USStates
     {
-        public string key { get; set; }
-        public int value { get; set; }
-        public string strValue { get; set; }
+        public string StateAbbr { get; set; }
+        public string StateName { get; set; }
+
     }
 }

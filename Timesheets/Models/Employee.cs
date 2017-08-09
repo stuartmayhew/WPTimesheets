@@ -17,6 +17,12 @@ namespace Timesheets.Models
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public string SSN { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
         public string Department { get; set; }
         public bool IsActive { get; set; }
         public string Salutation { get; set; }
@@ -32,5 +38,6 @@ namespace Timesheets.Models
         public string PayrollInfoClassRefFullName { get; set; }
         public string PayrollInfoUseTimeDataToCreatePaychecks { get; set; }
         public bool TSApprover { get; set; }
+        public bool TSSubmitter { get; set; }
     }
 }

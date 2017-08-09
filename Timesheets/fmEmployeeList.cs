@@ -75,7 +75,7 @@ namespace Timesheets
 
         private void LoadEmployeeGrid()
         {
-            string sql = "SELECT EmployeeID,Lastname,Firstname,Branch,TSApprover FROM Employee ";
+            string sql = "SELECT EmployeeID,Lastname,Firstname,Branch,TSApprover,TSSubmitter,isActive FROM Employee ";
             sql += "WHERE QBFile='" + GetCompany() + "' ";
             if (GetBranch() != "AA")
                 sql += "AND Branch = '" + GetBranch() + "' ";
@@ -98,11 +98,25 @@ namespace Timesheets
 
         }
 
+        private void LoadEmployeeGridFromSearch(string searchStr)
+        {
+            string sql = "SELECT EmployeeID,Lastname,Firstname,Branch,TSApprover,TSSubmitter,isActive FROM Employee ";
+            sql += "WHERE FirstName LIKE '%" + searchStr + "%' ";
+            sql += "OR LastName LIKE '%" + searchStr + "%' ";
+            DataSet ds = null;
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
+            {
+                ds = dg.GetDataSet(sql);
+            }
+            gvEmpList.DataSource = ds.Tables[0].DefaultView;
+        }
+
         private void gvEmpList_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             fmEmpEdit fEdit = new fmEmpEdit();
             fEdit.empID = gvEmpList.Rows[e.RowIndex].Cells[0].Value.ToString();
             fEdit.ShowDialog();
+            LoadEmployeeGrid();
         }
 
         private void cbBranch_SelectedIndexChanged(object sender, EventArgs e)
@@ -129,6 +143,25 @@ namespace Timesheets
             {
                 row.HeaderCell.Value = "Edit";
             }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            Employee emp = new Employee();
+            emp.FirstName = "New";
+            emp.Branch = GetBranch();
+            emp.QBFile = GetCompany();
+            emp.EmployeeID = new ModelToSQL<Employee>().WriteInsertSQL("Employee", emp, "EmployeeID", CommonProcs.WCompanyConnStr);
+            fmEmpEdit fEdit = new fmEmpEdit();
+            fEdit.empID = emp.EmployeeID.ToString();
+            fEdit.ShowDialog();
+            LoadEmployeeGrid();
+
+        }
+
+        private void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadEmployeeGridFromSearch(tbSearch.Text);
         }
     }
 }
