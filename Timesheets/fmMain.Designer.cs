@@ -80,6 +80,7 @@
             this.WedReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.WedOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ThurReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ThurOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.FriReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.FriOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SatReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -97,7 +98,6 @@
             this.gvRecap = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
-            this.ThurOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -634,6 +634,11 @@
             this.ThurReg.Text = "Thur Reg";
             this.ThurReg.Width = 68;
             // 
+            // ThurOT
+            // 
+            this.ThurOT.Text = "Thur OT";
+            this.ThurOT.Width = 66;
+            // 
             // FriReg
             // 
             this.FriReg.Text = "Fri Reg";
@@ -686,7 +691,9 @@
             this.gvTimesheet.Name = "gvTimesheet";
             this.gvTimesheet.Size = new System.Drawing.Size(1736, 243);
             this.gvTimesheet.TabIndex = 4;
+            this.gvTimesheet.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellLeave);
             this.gvTimesheet.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellValueChanged);
+            this.gvTimesheet.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gvTimesheet_DataError);
             // 
             // contextMenuStrip1
             // 
@@ -759,11 +766,6 @@
             this.label12.Size = new System.Drawing.Size(272, 17);
             this.label12.TabIndex = 0;
             this.label12.Text = "Click Column Header to check/uncheck All";
-            // 
-            // ThurOT
-            // 
-            this.ThurOT.Text = "Thur OT";
-            this.ThurOT.Width = 66;
             // 
             // fmMain
             // 

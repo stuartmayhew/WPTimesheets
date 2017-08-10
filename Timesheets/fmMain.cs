@@ -315,6 +315,64 @@ namespace Timesheets
                 }
                 UpdateCustTotals(custTotals);
             }
+            AddTotalsRow(listGrandTotals);
+        }
+
+        private void AddTotalsRow(List<ListViewTotals> listGrandTotals)
+        {
+            ListViewTotals dayTotals = new ListViewTotals();
+            foreach (var total in listGrandTotals)
+            {
+                dayTotals.RegMon += total.RegMon;
+                dayTotals.RegHours += total.RegMon;
+                dayTotals.OTMon += total.OTMon;
+                dayTotals.OTHours += total.OTMon;
+                dayTotals.RegTue += total.RegTue;
+                dayTotals.RegHours += total.RegTue;
+                dayTotals.OTTue += total.OTTue;
+                dayTotals.OTHours += total.OTTue;
+                dayTotals.RegWed += total.RegWed;
+                dayTotals.RegHours += total.RegWed;
+                dayTotals.OTWed += total.OTWed;
+                dayTotals.OTHours += total.OTWed;
+                dayTotals.RegThur += total.RegThur;
+                dayTotals.RegHours += total.RegThur;
+                dayTotals.OTThur += total.OTThur;
+                dayTotals.OTHours += total.OTThur;
+                dayTotals.RegFri += total.RegFri;
+                dayTotals.RegHours += total.RegFri;
+                dayTotals.OTFri += total.OTFri;
+                dayTotals.OTHours += total.OTFri;
+                dayTotals.RegSat += total.RegSat;
+                dayTotals.RegHours += total.RegSat;
+                dayTotals.OTSat += total.OTSat;
+                dayTotals.OTHours += total.OTSat;
+                dayTotals.RegSun += total.RegSun;
+                dayTotals.RegHours += total.RegSun;
+                dayTotals.OTSun += total.OTSun;
+                dayTotals.OTHours += total.OTSun;
+            }
+            ListViewItem lvi = new ListViewItem("Totals");
+            Font f = new Font(lvTime.Items[0].SubItems[0].Font, FontStyle.Bold);
+            lvi.Font = f;
+            lvi.SubItems.Add(dayTotals.RegMon.ToString());
+            lvi.SubItems.Add(dayTotals.OTMon.ToString());
+            lvi.SubItems.Add(dayTotals.RegTue.ToString());
+            lvi.SubItems.Add(dayTotals.OTTue.ToString());
+            lvi.SubItems.Add(dayTotals.RegWed.ToString());
+            lvi.SubItems.Add(dayTotals.OTWed.ToString());
+            lvi.SubItems.Add(dayTotals.RegThur.ToString());
+            lvi.SubItems.Add(dayTotals.OTThur.ToString());
+            lvi.SubItems.Add(dayTotals.RegFri.ToString());
+            lvi.SubItems.Add(dayTotals.OTFri.ToString());
+            lvi.SubItems.Add(dayTotals.RegSat.ToString());
+            lvi.SubItems.Add(dayTotals.OTSat.ToString());
+            lvi.SubItems.Add(dayTotals.RegSun.ToString());
+            lvi.SubItems.Add(dayTotals.OTSun.ToString());
+            lvi.SubItems.Add(dayTotals.RegHours.ToString());
+            lvi.SubItems.Add(dayTotals.OTHours.ToString());
+            lvi.SubItems.Add((dayTotals.OTHours + dayTotals.RegHours).ToString());
+            lvTime.Items.Add(lvi);
         }
 
         private void UpdateCustTotals(ListViewTotals tot)
@@ -537,12 +595,15 @@ namespace Timesheets
                 return;
             string colName = gvTimesheet.Columns[e.ColumnIndex].Name;
             string newValue = gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            if (newValue == string.Empty)
+                newValue = "0.0";
             string timeSheetID = gvTimesheet.Rows[e.RowIndex].Cells[0].Value.ToString();
             using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
             {
                 string sql = "UPDATE Timesheet SET " + colName + " = " + newValue + " WHERE TimesheetID=" + timeSheetID;
                 dg.RunCommand(sql);
             }
+            FillGridView(true);
         }
 
         private void tbHours_Enter(object sender, EventArgs e)
@@ -829,6 +890,16 @@ namespace Timesheets
             fEList.currBranch = GetCurrentBranch();
             fEList.currCompany = GetCurrentCompany();
             fEList.Show();
+        }
+
+        private void gvTimesheet_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+        }
+
+        private void gvTimesheet_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null)
+                gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "0.0";
         }
     }
 }
