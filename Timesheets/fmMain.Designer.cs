@@ -36,11 +36,6 @@
             this.setupAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setupLoginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.employeesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quickbooksDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshCustomersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshPayrollItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshClassesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnAppRequest = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
@@ -75,9 +70,25 @@
             this.cbEmployee = new System.Windows.Forms.ComboBox();
             this.tbTabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ssLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssProg = new System.Windows.Forms.ToolStripProgressBar();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.lvTime = new System.Windows.Forms.ListView();
+            this.Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.MonReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.MonOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TueReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TueOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.WedReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.WedOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ThurReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.FriReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.FriOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SatReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SatOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SunReg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SunOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.RegTot = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.OTTot = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Total = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.gvTimesheet = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,12 +97,13 @@
             this.gvRecap = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
+            this.ThurOT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tbTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -103,8 +115,7 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setupToolStripMenuItem,
-            this.quickbooksDataToolStripMenuItem});
+            this.setupToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
@@ -126,69 +137,30 @@
             // setupFacilityToolStripMenuItem
             // 
             this.setupFacilityToolStripMenuItem.Name = "setupFacilityToolStripMenuItem";
-            this.setupFacilityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setupFacilityToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.setupFacilityToolStripMenuItem.Text = "Facilities";
             this.setupFacilityToolStripMenuItem.Click += new System.EventHandler(this.setupFacilityToolStripMenuItem_Click);
             // 
             // setupAreaToolStripMenuItem
             // 
             this.setupAreaToolStripMenuItem.Name = "setupAreaToolStripMenuItem";
-            this.setupAreaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setupAreaToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.setupAreaToolStripMenuItem.Text = "Areas";
             this.setupAreaToolStripMenuItem.Click += new System.EventHandler(this.setupAreaToolStripMenuItem_Click);
             // 
             // setupLoginsToolStripMenuItem
             // 
             this.setupLoginsToolStripMenuItem.Name = "setupLoginsToolStripMenuItem";
-            this.setupLoginsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setupLoginsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.setupLoginsToolStripMenuItem.Text = "Logins";
             this.setupLoginsToolStripMenuItem.Click += new System.EventHandler(this.setupLoginsToolStripMenuItem_Click);
             // 
             // employeesToolStripMenuItem
             // 
             this.employeesToolStripMenuItem.Name = "employeesToolStripMenuItem";
-            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.employeesToolStripMenuItem.Text = "Employee";
             this.employeesToolStripMenuItem.Click += new System.EventHandler(this.employeesToolStripMenuItem_Click);
-            // 
-            // quickbooksDataToolStripMenuItem
-            // 
-            this.quickbooksDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.refreshEmployeeToolStripMenuItem,
-            this.refreshCustomersToolStripMenuItem,
-            this.refreshPayrollItemsToolStripMenuItem,
-            this.refreshClassesToolStripMenuItem});
-            this.quickbooksDataToolStripMenuItem.Name = "quickbooksDataToolStripMenuItem";
-            this.quickbooksDataToolStripMenuItem.Size = new System.Drawing.Size(109, 20);
-            this.quickbooksDataToolStripMenuItem.Text = "Quickbooks Data";
-            // 
-            // refreshEmployeeToolStripMenuItem
-            // 
-            this.refreshEmployeeToolStripMenuItem.Name = "refreshEmployeeToolStripMenuItem";
-            this.refreshEmployeeToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.refreshEmployeeToolStripMenuItem.Text = "Refresh Employee";
-            this.refreshEmployeeToolStripMenuItem.Click += new System.EventHandler(this.refreshEmployeeToolStripMenuItem_Click);
-            // 
-            // refreshCustomersToolStripMenuItem
-            // 
-            this.refreshCustomersToolStripMenuItem.Name = "refreshCustomersToolStripMenuItem";
-            this.refreshCustomersToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.refreshCustomersToolStripMenuItem.Text = "Refresh Customers";
-            this.refreshCustomersToolStripMenuItem.Click += new System.EventHandler(this.refreshCustomersToolStripMenuItem_Click);
-            // 
-            // refreshPayrollItemsToolStripMenuItem
-            // 
-            this.refreshPayrollItemsToolStripMenuItem.Name = "refreshPayrollItemsToolStripMenuItem";
-            this.refreshPayrollItemsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.refreshPayrollItemsToolStripMenuItem.Text = "Refresh Payroll Items";
-            this.refreshPayrollItemsToolStripMenuItem.Click += new System.EventHandler(this.refreshPayrollItemsToolStripMenuItem_Click);
-            // 
-            // refreshClassesToolStripMenuItem
-            // 
-            this.refreshClassesToolStripMenuItem.Name = "refreshClassesToolStripMenuItem";
-            this.refreshClassesToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.refreshClassesToolStripMenuItem.Text = "Refresh Classes";
-            this.refreshClassesToolStripMenuItem.Click += new System.EventHandler(this.refreshClassesToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -569,7 +541,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.statusStrip1);
+            this.tabPage1.Controls.Add(this.panel5);
             this.tabPage1.Controls.Add(this.gvTimesheet);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
@@ -580,26 +552,127 @@
             this.tabPage1.Text = "Entry";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // statusStrip1
+            // panel5
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ssLabel,
-            this.ssProg});
-            this.statusStrip1.Location = new System.Drawing.Point(4, 422);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1736, 22);
-            this.statusStrip1.TabIndex = 5;
-            this.statusStrip1.Text = "statusStrip1";
+            this.panel5.Controls.Add(this.lvTime);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(4, 247);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1736, 197);
+            this.panel5.TabIndex = 6;
             // 
-            // ssLabel
+            // lvTime
             // 
-            this.ssLabel.Name = "ssLabel";
-            this.ssLabel.Size = new System.Drawing.Size(0, 17);
+            this.lvTime.BackColor = System.Drawing.SystemColors.Info;
+            this.lvTime.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Customer,
+            this.MonReg,
+            this.MonOT,
+            this.TueReg,
+            this.TueOT,
+            this.WedReg,
+            this.WedOT,
+            this.ThurReg,
+            this.ThurOT,
+            this.FriReg,
+            this.FriOT,
+            this.SatReg,
+            this.SatOT,
+            this.SunReg,
+            this.SunOT,
+            this.RegTot,
+            this.OTTot,
+            this.Total});
+            this.lvTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvTime.FullRowSelect = true;
+            this.lvTime.GridLines = true;
+            this.lvTime.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvTime.Location = new System.Drawing.Point(0, 0);
+            this.lvTime.MultiSelect = false;
+            this.lvTime.Name = "lvTime";
+            this.lvTime.Size = new System.Drawing.Size(1736, 197);
+            this.lvTime.TabIndex = 0;
+            this.lvTime.UseCompatibleStateImageBehavior = false;
+            this.lvTime.View = System.Windows.Forms.View.Details;
             // 
-            // ssProg
+            // Customer
             // 
-            this.ssProg.Name = "ssProg";
-            this.ssProg.Size = new System.Drawing.Size(700, 16);
+            this.Customer.Text = "Customer/Job";
+            this.Customer.Width = 502;
+            // 
+            // MonReg
+            // 
+            this.MonReg.Text = "Mon Reg";
+            this.MonReg.Width = 80;
+            // 
+            // MonOT
+            // 
+            this.MonOT.Text = "Mon OT";
+            this.MonOT.Width = 65;
+            // 
+            // TueReg
+            // 
+            this.TueReg.Text = "Tue Reg";
+            this.TueReg.Width = 76;
+            // 
+            // TueOT
+            // 
+            this.TueOT.Text = "Tue OT";
+            // 
+            // WedReg
+            // 
+            this.WedReg.Text = "Wed Reg";
+            this.WedReg.Width = 76;
+            // 
+            // WedOT
+            // 
+            this.WedOT.Text = "Wed OT";
+            this.WedOT.Width = 63;
+            // 
+            // ThurReg
+            // 
+            this.ThurReg.Text = "Thur Reg";
+            this.ThurReg.Width = 68;
+            // 
+            // FriReg
+            // 
+            this.FriReg.Text = "Fri Reg";
+            // 
+            // FriOT
+            // 
+            this.FriOT.Text = "Fri OT";
+            // 
+            // SatReg
+            // 
+            this.SatReg.Text = "Sat Reg";
+            this.SatReg.Width = 78;
+            // 
+            // SatOT
+            // 
+            this.SatOT.Text = "Sat OT";
+            // 
+            // SunReg
+            // 
+            this.SunReg.Text = "Sun Reg";
+            this.SunReg.Width = 72;
+            // 
+            // SunOT
+            // 
+            this.SunOT.Text = "Sun OT";
+            // 
+            // RegTot
+            // 
+            this.RegTot.Text = "Reg Tot";
+            this.RegTot.Width = 74;
+            // 
+            // OTTot
+            // 
+            this.OTTot.Text = "OT Tot";
+            this.OTTot.Width = 59;
+            // 
+            // Total
+            // 
+            this.Total.Text = "Total";
             // 
             // gvTimesheet
             // 
@@ -607,11 +680,11 @@
             this.gvTimesheet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.gvTimesheet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvTimesheet.ContextMenuStrip = this.contextMenuStrip1;
-            this.gvTimesheet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvTimesheet.Dock = System.Windows.Forms.DockStyle.Top;
             this.gvTimesheet.Location = new System.Drawing.Point(4, 4);
             this.gvTimesheet.Margin = new System.Windows.Forms.Padding(4);
             this.gvTimesheet.Name = "gvTimesheet";
-            this.gvTimesheet.Size = new System.Drawing.Size(1736, 440);
+            this.gvTimesheet.Size = new System.Drawing.Size(1736, 243);
             this.gvTimesheet.TabIndex = 4;
             this.gvTimesheet.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellValueChanged);
             // 
@@ -687,6 +760,11 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Click Column Header to check/uncheck All";
             // 
+            // ThurOT
+            // 
+            this.ThurOT.Text = "Thur OT";
+            this.ThurOT.Width = 66;
+            // 
             // fmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -713,9 +791,7 @@
             this.panel2.PerformLayout();
             this.tbTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvTimesheet)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -762,14 +838,6 @@
         private System.Windows.Forms.TextBox tbHours;
         private System.Windows.Forms.Button btnAddHours;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel ssLabel;
-        private System.Windows.Forms.ToolStripProgressBar ssProg;
-        private System.Windows.Forms.ToolStripMenuItem quickbooksDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshEmployeeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshCustomersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshPayrollItemsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshClassesToolStripMenuItem;
         private System.Windows.Forms.Button btnAddNote;
         private System.Windows.Forms.DataGridViewTextBoxColumn custNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
@@ -794,6 +862,26 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.ListView lvTime;
+        private System.Windows.Forms.ColumnHeader Customer;
+        private System.Windows.Forms.ColumnHeader MonReg;
+        private System.Windows.Forms.ColumnHeader MonOT;
+        private System.Windows.Forms.ColumnHeader TueReg;
+        private System.Windows.Forms.ColumnHeader TueOT;
+        private System.Windows.Forms.ColumnHeader WedReg;
+        private System.Windows.Forms.ColumnHeader WedOT;
+        private System.Windows.Forms.ColumnHeader ThurReg;
+        private System.Windows.Forms.ColumnHeader FriReg;
+        private System.Windows.Forms.ColumnHeader FriOT;
+        private System.Windows.Forms.ColumnHeader SatReg;
+        private System.Windows.Forms.ColumnHeader SatOT;
+        private System.Windows.Forms.ColumnHeader SunReg;
+        private System.Windows.Forms.ColumnHeader SunOT;
+        private System.Windows.Forms.ColumnHeader RegTot;
+        private System.Windows.Forms.ColumnHeader OTTot;
+        private System.Windows.Forms.ColumnHeader Total;
+        private System.Windows.Forms.ColumnHeader ThurOT;
     }
 }
 

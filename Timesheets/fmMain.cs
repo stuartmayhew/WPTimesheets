@@ -18,13 +18,17 @@ namespace Timesheets
         int branch;
         string userName;
         string noteText;
-        decimal totalRegTime = 0.0M;
-        decimal totalOTTime = 0.0M;
         bool isLoading = false;
         bool showActive = false;
         bool showActiveCust = false;
         bool supCheckedAll = false;
         bool OMCheckedAll = false;
+
+        enum DayIndex
+        {
+            xxx,MonReg,MonOT,TueReg,TueOT,WedReg,WedOT,ThurReg,ThurOT,FriReg,FriOT,SatReg,SatOT,SunReg,SunOT,RegTot,OTTot,Total
+        };
+
         public fmMain()
         {
             Thread t = new Thread(new ThreadStart(SplashStart));
@@ -59,12 +63,12 @@ namespace Timesheets
             cbCompany.SelectedIndex = 0;
             tbTabs.TabPages[1].Enabled = CheckCompleteForRecap();
             SetAccessFromAccessLevel(accessLevel);
-            FillGridView();
+            FillGridView(false);
         }
 
         private void SetAccessFromAccessLevel(int accessLevel)
         {
-            
+
         }
 
         private bool CheckCompleteForRecap()
@@ -129,16 +133,16 @@ namespace Timesheets
         private void cbEmployee_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isLoading)
-                FillGridView();
+                FillGridView(true);
         }
         #endregion
         #region Combos
-        private void LoadBranchCombos() 
+        private void LoadBranchCombos()
         {
             string companyStr = GetCurrentCompany();
             string branchStr = GetCurrentBranch();
             LoadEmployeeCombo(companyStr, branchStr, showActive);
-            LoadCustomerCombo(companyStr,branchStr,showActiveCust);
+            LoadCustomerCombo(companyStr, branchStr, showActiveCust);
             LoadPayrollItemCombo(companyStr, branchStr);
             LoadClassCombo(companyStr, branchStr);
             List<int> facIDs = LoadFacilityCombo(branchStr);
@@ -160,14 +164,14 @@ namespace Timesheets
             return CommonProcs.GetFacList(branchStr);
         }
 
-        private void LoadPayrollItemCombo(string companyStr,string branchStr)
+        private void LoadPayrollItemCombo(string companyStr, string branchStr)
         {
             cbPayrollItem.DataSource = SelectListHelper.GetPayrollItemList(companyStr, branchStr);
             cbPayrollItem.DisplayMember = "key";
             cbPayrollItem.ValueMember = "value";
         }
 
-        private void LoadCustomerCombo(string companyStr, string branchStr,bool showActive)
+        private void LoadCustomerCombo(string companyStr, string branchStr, bool showActive)
         {
             cbCustomer.DataSource = SelectListHelper.GetCustomerList(companyStr, branchStr, showActive);
             cbCustomer.DisplayMember = "key";
@@ -180,37 +184,14 @@ namespace Timesheets
             cbClassEquip.DisplayMember = "key";
             cbClassEquip.ValueMember = "value";
         }
-        private void LoadEmployeeCombo(string companyStr,string branchStr,bool showActive = false)
+        private void LoadEmployeeCombo(string companyStr, string branchStr, bool showActive = false)
         {
-            cbEmployee.DataSource = SelectListHelper.GetEmployeeList(companyStr,branchStr,showActive);
+            cbEmployee.DataSource = SelectListHelper.GetEmployeeList(companyStr, branchStr, showActive);
             cbEmployee.DisplayMember = "key";
             cbEmployee.ValueMember = "value";
         }
         #endregion
         #region Menu
-        private void refreshEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            QBDataPump pump = new QBDataPump(statusStrip1);
-            pump.PumpEmployees(GetCurrentCompany());
-        }
-
-        private void refreshCustomersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            QBDataPump pump = new QBDataPump(statusStrip1);
-            pump.PumpCustomers(GetCurrentCompany());
-        }
-
-        private void refreshPayrollItemsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            QBDataPump pump = new QBDataPump(statusStrip1);
-            pump.PumpPayrollItems(GetCurrentCompany());
-        }
-
-        private void refreshClassesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            QBDataPump pump = new QBDataPump(statusStrip1);
-            pump.PumpClass(GetCurrentCompany());
-        }
 
         private void cbFac_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -263,12 +244,10 @@ namespace Timesheets
             if (((ComboBoxItem)cbPayrollItem.SelectedItem).key.Contains("RG"))
             {
                 ts.RegHours = hours;
-                totalRegTime += hours;
             }
             if (((ComboBoxItem)cbPayrollItem.SelectedItem).key.Contains("OT"))
             {
                 ts.OTHours = hours;
-                totalOTTime += hours;
             }
             if (ts.OTHours < 0)
             {
@@ -283,20 +262,222 @@ namespace Timesheets
             ts.OMApprove = false;
             ts.HOApprove = false;
             ts.TimesheetID = new ModelToSQL<TimeSheet>().WriteInsertSQL("Timesheet", ts, "TimesheetID", CommonProcs.WCompanyConnStr);
-            FillGridView();
+            FillGridView(true);
             LoadAreaCombo(CommonProcs.GetFacList(GetCurrentBranch()));
             dtpDateWorked.Value = dtpDateWorked.Value.AddDays(1);
             dtpDateWorked.Focus();
         }
 
-        private void FillGridView()
+        private void FillGridView(bool fillTimeGrid)
         {
             string sql = "SELECT TimesheetID,Customer,Facility,Area,";
             sql += "ClassEquip,PayrollItem,WorkDate,";
             sql += "WorkDay,RegHours,OTHours,Notes ";
             sql += "FROM TimesheetEntryGrid WHERE EmployeeID = " + cbEmployee.SelectedValue;
-            List<TimesheetEntryGrid> gridRows = new ReaderToModel<TimesheetEntryGrid>().CreateList(sql,CommonProcs.WCompanyConnStr);
+            List<TimesheetEntryGrid> gridRows = new ReaderToModel<TimesheetEntryGrid>().CreateList(sql, CommonProcs.WCompanyConnStr);
             gvTimesheet.DataSource = gridRows;
+            if (fillTimeGrid)
+            {
+                lvTime.Items.Clear();
+                FillTimeGrid(gridRows);
+            }
+        }
+
+        private void FillTimeGrid(List<TimesheetEntryGrid> gridRows)
+        {
+            List<TimesheetEntryGrid> custItems = gridRows.GroupBy(x => new { x.Customer }).Select(x => x.First()).ToList();
+            foreach (TimesheetEntryGrid row in custItems)
+            {
+                AddListView(row);
+            }
+            custItems = gridRows.GroupBy(x => new { x.Customer,x.PayrollItem,x.WorkDay }).Select(x => x.First()).ToList();
+            List<ListViewTotals> listGrandTotals = new List<ListViewTotals>();
+
+            foreach (TimesheetEntryGrid row in custItems)
+            {
+                ListViewTotals listTotals = UpdateListView(row);
+                listGrandTotals.Add(listTotals);
+            }
+
+            List<ListViewTotals> custTotalList = listGrandTotals.GroupBy(x => new { x.custName }).Select(x => x.First()).ToList();
+
+            foreach(var tot in custTotalList)
+            {
+                ListViewTotals custTotals = new ListViewTotals();
+                custTotals.custName = tot.custName;
+                custTotals.RegHours = 0.0M;
+                custTotals.OTHours = 0.0M;
+                List<ListViewTotals> dayList = listGrandTotals.Where(x => x.custName == tot.custName).ToList();
+                foreach (var day in dayList)
+                {
+                    custTotals.RegHours += day.RegMon + day.RegTue + day.RegWed + day.RegThur + day.RegFri + day.RegSat + day.RegSun;
+                    custTotals.OTHours += day.OTMon + day.OTTue + day.OTWed + day.OTThur + day.OTFri + day.OTSat + day.OTSun;
+                }
+                UpdateCustTotals(custTotals);
+            }
+        }
+
+        private void UpdateCustTotals(ListViewTotals tot)
+        {
+            foreach (ListViewItem item in lvTime.Items)
+            {
+                if (item.Text == tot.custName)
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+
+            Font f = new Font(lvTime.Items[0].SubItems[0].Font, FontStyle.Bold);
+
+            lvTime.SelectedItems[0].UseItemStyleForSubItems = false;
+            lvTime.SelectedItems[0].SubItems[(int)DayIndex.RegTot].Text = tot.RegHours.ToString();
+            lvTime.SelectedItems[0].SubItems[(int)DayIndex.RegTot].Font = f;
+            if (tot.RegHours > 40.0M)
+                lvTime.SelectedItems[0].SubItems[(int)DayIndex.RegTot].ForeColor = Color.Red;
+            lvTime.SelectedItems[0].SubItems[(int)DayIndex.OTTot].Text = tot.OTHours.ToString();
+            lvTime.SelectedItems[0].SubItems[(int)DayIndex.OTTot].Font = f;
+            lvTime.SelectedItems[0].SubItems[(int)DayIndex.Total].Text = (tot.OTHours + tot.RegHours).ToString();
+            lvTime.SelectedItems[0].SubItems[(int)DayIndex.Total].Font = f;
+        }
+
+        private void AddListView(TimesheetEntryGrid row)
+        {
+            ListViewItem lvi = new ListViewItem(row.Customer);
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvi.SubItems.Add("0.0");
+            lvTime.Items.Add(lvi);
+        }
+
+        private ListViewTotals UpdateListView(TimesheetEntryGrid row)
+        {
+            ListViewTotals listTotals = new ListViewTotals();
+            listTotals.custName = row.Customer;
+
+            foreach (ListViewItem item in lvTime.Items)
+            {
+                if (item.Text == row.Customer)
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+
+            if (row.WorkDay == "Monday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.MonReg].Text = row.RegHours.ToString();
+                    listTotals.RegMon += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.MonOT].Text = row.OTHours.ToString();
+                    listTotals.OTMon += row.OTHours;
+                }
+            }
+
+            if (row.WorkDay == "Tuesday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.TueReg].Text = row.RegHours.ToString();
+                    listTotals.RegTue += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.TueOT].Text = row.OTHours.ToString();
+                    listTotals.OTTue += row.OTHours;
+                }
+            }
+
+            if (row.WorkDay == "Wednesday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.WedReg].Text = row.RegHours.ToString();
+                    listTotals.RegWed += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.WedOT].Text = row.OTHours.ToString();
+                    listTotals.OTWed += row.OTHours;
+                }
+            }
+
+            if (row.WorkDay == "Thursday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.ThurReg].Text = row.RegHours.ToString();
+                    listTotals.RegThur += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.ThurOT].Text = row.OTHours.ToString();
+                    listTotals.OTThur += row.OTHours;
+                }
+            }
+
+            if (row.WorkDay == "Friday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.FriReg].Text = row.RegHours.ToString();
+                    listTotals.RegFri += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.FriOT].Text = row.OTHours.ToString();
+                    listTotals.OTFri += row.OTHours;
+                }
+            }
+
+            if (row.WorkDay == "Saturday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.SatReg].Text = row.RegHours.ToString();
+                    listTotals.RegSat += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.SatOT].Text = row.OTHours.ToString();
+                    listTotals.OTSat += row.OTHours;
+                }
+            }
+
+            if (row.WorkDay == "Sunday")
+            {
+                if (row.PayrollItem.Contains("RG"))
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.SunReg].Text = row.RegHours.ToString();
+                    listTotals.RegSun += row.RegHours;
+                }
+                else
+                {
+                    lvTime.SelectedItems[0].SubItems[(int)DayIndex.SunOT].Text = row.OTHours.ToString();
+                    listTotals.OTSun += row.OTHours;
+                }
+            }
+
+
+            return listTotals;
         }
 
         private void btnAddNote_Click(object sender, EventArgs e)
@@ -378,7 +559,7 @@ namespace Timesheets
             List<TimesheetTotals> totals = new ReaderToModel<TimesheetTotals>().CreateList(sql, CommonProcs.WCompanyConnStr);
             foreach (var tot in totals)
             {
-                if (CheckApproved(tot,"SUP"))
+                if (CheckApproved(tot, "SUP"))
                     tot.SupApproved = true;
                 if (CheckApproved(tot, "OM"))
                     tot.OMApproved = true;
@@ -444,7 +625,7 @@ namespace Timesheets
                     MessageBox.Show("Not Authorized to approve Timesheet");
                     return;
                 }
-                    
+
                 ApproveBySuper(e);
                 FillTotalsView();
             }
@@ -492,7 +673,7 @@ namespace Timesheets
                 string sql = "DELETE FROM Timesheet  WHERE TimesheetID=" + TimelineID;
                 dg.RunCommand(sql);
             }
-            FillGridView();
+            FillGridView(true);
         }
         #endregion
 
@@ -552,7 +733,7 @@ namespace Timesheets
         //{
         //    CheckAll("HO");
         //}
-        private void CheckAll(string btnName,bool checkedAll)
+        private void CheckAll(string btnName, bool checkedAll)
         {
             string checkVal = "1";
             if (checkedAll)
@@ -574,20 +755,20 @@ namespace Timesheets
                     }
 
                     break;
-                //case "HO":
-                //    if (CommonProcs.CheckAccessLevel() != 10)
-                //    {
-                //        MessageBox.Show("Not Authorized to approve Timesheet");
-                //        return;
-                //    }
+                    //case "HO":
+                    //    if (CommonProcs.CheckAccessLevel() != 10)
+                    //    {
+                    //        MessageBox.Show("Not Authorized to approve Timesheet");
+                    //        return;
+                    //    }
 
-                //    break;
+                    //    break;
             }
-            ApproveAll(btnName,checkVal);
+            ApproveAll(btnName, checkVal);
             FillTotalsView();
         }
 
-        private void ApproveAll(string btnName,string val)
+        private void ApproveAll(string btnName, string val)
         {
             string appField = "SupApprove";
             if (btnName == "OM")

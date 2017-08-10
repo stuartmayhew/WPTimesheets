@@ -150,6 +150,7 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Facility.cs" />
+    <Compile Include="Models\ListViewTotals.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PayrollItem.cs" />
     <Compile Include="Models\QBModels\QBAccount.cs" />
