@@ -9,7 +9,7 @@ namespace Timesheets.Helpers
 {
     public static class SelectListHelper
     {
-        public static List<ComboBoxItem> GetEmployeeList(string QBFile,string branchStr,bool showActive)
+        public static List<ComboBoxItem> GetEmployeeList(string QBFile,string branchStr,bool showActive,bool useItemNo)
         {
             List<ComboBoxItem> items = new List<ComboBoxItem>();
             string sql = "SELECT * FROM Employee WHERE QBFile = '" + QBFile + "' ";
@@ -22,13 +22,16 @@ namespace Timesheets.Helpers
             {
                 ComboBoxItem cbItem = new ComboBoxItem();
                 cbItem.value = emp.EmployeeID;
-                cbItem.key = emp.EmployeeID.ToString() + "-" + emp.LastName + "," + emp.FirstName;
+                if (useItemNo)
+                    cbItem.key = emp.EmployeeID.ToString() + "-" + emp.LastName + "," + emp.FirstName;
+                else
+                    cbItem.key = emp.LastName + "," + emp.FirstName;
                 items.Add(cbItem);
             }
             return items;
         }
 
-        internal static List<ComboBoxItem> GetCustomerList(string QBFile, string branchStr,bool showActive,string searchStr = "")
+        internal static List<ComboBoxItem> GetCustomerList(string QBFile, string branchStr,bool showActive, bool useItemNo)
         {
             List<ComboBoxItem> items = new List<ComboBoxItem>();
             string sql = "SELECT * FROM Customer WHERE QBFile = '" + QBFile + "' ";
@@ -36,37 +39,41 @@ namespace Timesheets.Helpers
                 sql += "AND branch = '" + branchStr.Trim() + "' ";
             if (showActive)
                 sql += " AND isActive = 1";
-            if (searchStr != string.Empty)
-                sql += " AND FullName LIKE '%" + searchStr + "%'";
+
             List<Customer> custList = new ReaderToModel<Customer>().CreateList(sql, CommonProcs.WCompanyConnStr);
             foreach (var cust in custList)
             {
                 ComboBoxItem cbItem = new ComboBoxItem();
                 cbItem.value = cust.CustomerID;
-                cbItem.key = cust.CustomerID.ToString() + "-" + cust.FullName;
+                if (useItemNo)
+                    cbItem.key = cust.CustomerID.ToString() + "-" + cust.FullName;
+                else
+                    cbItem.key = cust.FullName;
+
                 items.Add(cbItem);
             }
             return items;
         }
 
-        internal static List<ComboBoxItem> GetPayrollItemList(string QBFile, string branchStr)
+        internal static List<ComboBoxItem> GetPayrollItemList(string QBFile, string branchStr, bool useItemNo)
         {
             List<ComboBoxItem> items = new List<ComboBoxItem>();
             string sql = "SELECT * FROM PayrollItem WHERE QBFile = '" + QBFile + "' ";
             if (branchStr != "AA")
-                sql += "AND branch = '" + branchStr.Trim() + "'";
+                sql += "AND branch = '" + branchStr.Trim() + "' ";
+            sql += "AND WageType='HourlyRegular'";
             List<PayrollItem> priList = new ReaderToModel<PayrollItem>().CreateList(sql, CommonProcs.WCompanyConnStr);
             foreach (var pri in priList)
             {
                 ComboBoxItem cbItem = new ComboBoxItem();
                 cbItem.value = pri.payItemID;
-                cbItem.key = pri.payItemID.ToString() + "-" + pri.Name;
+                cbItem.key = pri.Name.Split('-')[1];
                 items.Add(cbItem);
             }
             return items;
         }
 
-        internal static List<ComboBoxItem> GetClassCombo(string QBFile, string branchStr)
+        internal static List<ComboBoxItem> GetClassCombo(string QBFile, string branchStr, bool useItemNo)
         {
             List<ComboBoxItem> items = new List<ComboBoxItem>();
             string sql = "SELECT * FROM Clss WHERE QBFile = '" + QBFile + "' ";
@@ -78,7 +85,10 @@ namespace Timesheets.Helpers
             {
                 ComboBoxItem cbItem = new ComboBoxItem();
                 cbItem.value = cls.ClassID;
-                cbItem.key = cls.ClassID.ToString() + "-" + cls.Name;
+                if (useItemNo)
+                    cbItem.key = cls.ClassID.ToString() + "-" + cls.Name;
+                else
+                    cbItem.key = cls.Name;
                 items.Add(cbItem);
             }
             return items;
@@ -132,34 +142,6 @@ namespace Timesheets.Helpers
                 items.Add(cbItem);
             }
             return items;
-        }
-
-        public static void AutoComplete(ComboBox cb,KeyPressEventArgs e, bool blnLimitToList = false)
-        {
-            string strFindStr = "";
-
-            if (e.KeyChar == (char)8)
-            {
-                if (cb.SelectionStart <= 1)
-                {
-                    cb.Text = "";
-                    return;
-                }
-
-                if (cb.SelectionLength == 0)
-                    strFindStr = cb.Text.Substring(0, cb.Text.Length - 1);
-                else
-                    strFindStr = cb.Text.Substring(0, cb.SelectionStart - 1);
-            }
-            else
-            {
-                if (cb.SelectionLength == 0)
-                    strFindStr = cb.Text + e.KeyChar;
-                else
-                    strFindStr = cb.Text.Substring(0, cb.SelectionStart) + e.KeyChar;
-            }
-            cb.DataSource = GetCustomerList("W", "01", true, strFindStr);
-
         }
     }
 

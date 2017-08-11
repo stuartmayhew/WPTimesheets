@@ -11,11 +11,13 @@ namespace Timesheets.Helpers
 {
     public static class MyConfig
     {
+        static string fileName = @"C:\PowerCranes\user.txt";
         public static string ReadValue(string key)
         {
-            if (File.Exists("user.txt"))
+            StreamReader reader = null;
+            if (File.Exists(fileName))
             {
-                StreamReader reader = new StreamReader("user.txt");
+                reader = new StreamReader(fileName);
                 string line = reader.ReadLine();
                 while (!line.Contains(key))
                 {
@@ -24,12 +26,13 @@ namespace Timesheets.Helpers
                 string[] keyVals = line.Split('=');
                 return keyVals[1];
             }
+            reader.Close();
             return "";
         }
 
         public static void WriteValue(string key,string value)
         {
-            StreamReader reader = new StreamReader("user.txt");
+            StreamReader reader = new StreamReader(fileName);
             List<string> lines = new List<string>();
             while (reader.Peek() > 0)
             {
@@ -42,19 +45,19 @@ namespace Timesheets.Helpers
                 lines.Add(line);
             }
             File.Delete("user.settings");
-            StreamWriter writer = new StreamWriter("user.txt");
+            StreamWriter writer = new StreamWriter(fileName);
             foreach (var line in lines)
                 writer.WriteLine(line);
+            reader.Close();
+            writer.Close();
         }
 
         public static void BuildFile(Login login)
         {
             if (File.Exists("user.txt"))
                 File.Delete("user.txt");
-            StreamWriter writer = new StreamWriter("user.txt");
+            StreamWriter writer = new StreamWriter(fileName);
             string line = "userId=" + login.userID;
-            writer.WriteLine(line);
-            line = "userId=" + login.userID;
             writer.WriteLine(line);
             line = "firstName=" + login.firstName;
             writer.WriteLine(line);
@@ -71,7 +74,7 @@ namespace Timesheets.Helpers
         }
         public static Login ReadFile()
         {
-            StreamReader reader = new StreamReader("user.txt");
+            StreamReader reader = new StreamReader(fileName);
             Login login = new Login();
             while(reader.Peek() > 0)
             {

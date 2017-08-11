@@ -63,7 +63,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbPayrollItem = new System.Windows.Forms.ComboBox();
-            this.tbHours = new System.Windows.Forms.TextBox();
+            this.tbRegHours = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpDateWorked = new System.Windows.Forms.DateTimePicker();
@@ -98,6 +98,11 @@
             this.gvRecap = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tbOTHours = new System.Windows.Forms.TextBox();
+            this.cbUseItemNo = new System.Windows.Forms.CheckBox();
+            this.btnReturn = new System.Windows.Forms.Button();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -119,7 +124,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1752, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1848, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -165,6 +170,9 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.btnLogout);
+            this.panel1.Controls.Add(this.btnReturn);
+            this.panel1.Controls.Add(this.cbUseItemNo);
             this.panel1.Controls.Add(this.btnAppRequest);
             this.panel1.Controls.Add(this.lblStatus);
             this.panel1.Controls.Add(this.Company);
@@ -179,14 +187,14 @@
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1752, 81);
+            this.panel1.Size = new System.Drawing.Size(1848, 81);
             this.panel1.TabIndex = 1;
             // 
             // btnAppRequest
             // 
-            this.btnAppRequest.Location = new System.Drawing.Point(1121, 35);
+            this.btnAppRequest.Location = new System.Drawing.Point(1126, 32);
             this.btnAppRequest.Name = "btnAppRequest";
-            this.btnAppRequest.Size = new System.Drawing.Size(129, 37);
+            this.btnAppRequest.Size = new System.Drawing.Size(158, 41);
             this.btnAppRequest.TabIndex = 9;
             this.btnAppRequest.Text = "Request Approval";
             this.btnAppRequest.UseVisualStyleBackColor = true;
@@ -290,6 +298,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label13);
+            this.panel2.Controls.Add(this.tbOTHours);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.cbArea);
             this.panel2.Controls.Add(this.label3);
@@ -305,7 +315,7 @@
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.cbPayrollItem);
-            this.panel2.Controls.Add(this.tbHours);
+            this.panel2.Controls.Add(this.tbRegHours);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.dtpDateWorked);
@@ -314,7 +324,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 105);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1752, 170);
+            this.panel2.Size = new System.Drawing.Size(1848, 170);
             this.panel2.TabIndex = 2;
             // 
             // label11
@@ -382,7 +392,7 @@
             // 
             // btnAddNote
             // 
-            this.btnAddNote.Location = new System.Drawing.Point(1640, 122);
+            this.btnAddNote.Location = new System.Drawing.Point(1716, 121);
             this.btnAddNote.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddNote.Name = "btnAddNote";
             this.btnAddNote.Size = new System.Drawing.Size(100, 28);
@@ -403,11 +413,11 @@
             // 
             // btnAddHours
             // 
-            this.btnAddHours.Location = new System.Drawing.Point(1567, 122);
+            this.btnAddHours.Location = new System.Drawing.Point(1643, 121);
             this.btnAddHours.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddHours.Name = "btnAddHours";
             this.btnAddHours.Size = new System.Drawing.Size(65, 28);
-            this.btnAddHours.TabIndex = 8;
+            this.btnAddHours.TabIndex = 9;
             this.btnAddHours.Text = "Add";
             this.btnAddHours.UseVisualStyleBackColor = true;
             this.btnAddHours.Click += new System.EventHandler(this.btnAddHours_Click);
@@ -458,12 +468,12 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(1490, 99);
+            this.label5.Location = new System.Drawing.Point(1489, 87);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 17);
+            this.label5.Size = new System.Drawing.Size(46, 34);
             this.label5.TabIndex = 13;
-            this.label5.Text = "Hours";
+            this.label5.Text = "Reg \r\nHours";
             // 
             // cbPayrollItem
             // 
@@ -476,14 +486,14 @@
             this.cbPayrollItem.Size = new System.Drawing.Size(231, 24);
             this.cbPayrollItem.TabIndex = 6;
             // 
-            // tbHours
+            // tbRegHours
             // 
-            this.tbHours.Location = new System.Drawing.Point(1492, 125);
-            this.tbHours.Margin = new System.Windows.Forms.Padding(4);
-            this.tbHours.Name = "tbHours";
-            this.tbHours.Size = new System.Drawing.Size(67, 23);
-            this.tbHours.TabIndex = 7;
-            this.tbHours.Enter += new System.EventHandler(this.tbHours_Enter);
+            this.tbRegHours.Location = new System.Drawing.Point(1492, 125);
+            this.tbRegHours.Margin = new System.Windows.Forms.Padding(4);
+            this.tbRegHours.Name = "tbRegHours";
+            this.tbRegHours.Size = new System.Drawing.Size(67, 23);
+            this.tbRegHours.TabIndex = 7;
+            this.tbRegHours.Enter += new System.EventHandler(this.tbHours_Enter);
             // 
             // label8
             // 
@@ -508,7 +518,7 @@
             // dtpDateWorked
             // 
             this.dtpDateWorked.CustomFormat = "";
-            this.dtpDateWorked.Location = new System.Drawing.Point(4, 125);
+            this.dtpDateWorked.Location = new System.Drawing.Point(8, 124);
             this.dtpDateWorked.Margin = new System.Windows.Forms.Padding(4);
             this.dtpDateWorked.Name = "dtpDateWorked";
             this.dtpDateWorked.Size = new System.Drawing.Size(227, 23);
@@ -519,7 +529,7 @@
             this.cbEmployee.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbEmployee.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbEmployee.FormattingEnabled = true;
-            this.cbEmployee.Location = new System.Drawing.Point(4, 25);
+            this.cbEmployee.Location = new System.Drawing.Point(8, 25);
             this.cbEmployee.Margin = new System.Windows.Forms.Padding(4);
             this.cbEmployee.Name = "cbEmployee";
             this.cbEmployee.Size = new System.Drawing.Size(401, 24);
@@ -535,7 +545,7 @@
             this.tbTabs.Margin = new System.Windows.Forms.Padding(4);
             this.tbTabs.Name = "tbTabs";
             this.tbTabs.SelectedIndex = 0;
-            this.tbTabs.Size = new System.Drawing.Size(1752, 477);
+            this.tbTabs.Size = new System.Drawing.Size(1848, 477);
             this.tbTabs.TabIndex = 3;
             this.tbTabs.SelectedIndexChanged += new System.EventHandler(this.tbTabs_SelectedIndexChanged);
             // 
@@ -547,7 +557,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1744, 448);
+            this.tabPage1.Size = new System.Drawing.Size(1840, 448);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Entry";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -558,7 +568,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(4, 247);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1736, 197);
+            this.panel5.Size = new System.Drawing.Size(1832, 197);
             this.panel5.TabIndex = 6;
             // 
             // lvTime
@@ -590,7 +600,7 @@
             this.lvTime.Location = new System.Drawing.Point(0, 0);
             this.lvTime.MultiSelect = false;
             this.lvTime.Name = "lvTime";
-            this.lvTime.Size = new System.Drawing.Size(1736, 197);
+            this.lvTime.Size = new System.Drawing.Size(1832, 197);
             this.lvTime.TabIndex = 0;
             this.lvTime.UseCompatibleStateImageBehavior = false;
             this.lvTime.View = System.Windows.Forms.View.Details;
@@ -689,7 +699,7 @@
             this.gvTimesheet.Location = new System.Drawing.Point(4, 4);
             this.gvTimesheet.Margin = new System.Windows.Forms.Padding(4);
             this.gvTimesheet.Name = "gvTimesheet";
-            this.gvTimesheet.Size = new System.Drawing.Size(1736, 243);
+            this.gvTimesheet.Size = new System.Drawing.Size(1832, 243);
             this.gvTimesheet.TabIndex = 4;
             this.gvTimesheet.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellLeave);
             this.gvTimesheet.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTimesheet_CellValueChanged);
@@ -718,7 +728,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1744, 448);
+            this.tabPage2.Size = new System.Drawing.Size(1840, 448);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Recap";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -730,7 +740,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(4, 73);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1736, 371);
+            this.panel4.Size = new System.Drawing.Size(1832, 371);
             this.panel4.TabIndex = 2;
             // 
             // gvRecap
@@ -743,7 +753,7 @@
             this.gvRecap.Location = new System.Drawing.Point(0, 0);
             this.gvRecap.Name = "gvRecap";
             this.gvRecap.ReadOnly = true;
-            this.gvRecap.Size = new System.Drawing.Size(1732, 367);
+            this.gvRecap.Size = new System.Drawing.Size(1828, 367);
             this.gvRecap.TabIndex = 0;
             this.gvRecap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvRecap_CellContentClick);
             this.gvRecap.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvRecap_ColumnHeaderMouseClick);
@@ -755,7 +765,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(4, 4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1736, 69);
+            this.panel3.Size = new System.Drawing.Size(1832, 69);
             this.panel3.TabIndex = 1;
             // 
             // label12
@@ -767,11 +777,62 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Click Column Header to check/uncheck All";
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(1560, 87);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(46, 34);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "OT\r\nHours";
+            // 
+            // tbOTHours
+            // 
+            this.tbOTHours.Location = new System.Drawing.Point(1563, 125);
+            this.tbOTHours.Margin = new System.Windows.Forms.Padding(4);
+            this.tbOTHours.Name = "tbOTHours";
+            this.tbOTHours.Size = new System.Drawing.Size(67, 23);
+            this.tbOTHours.TabIndex = 8;
+            // 
+            // cbUseItemNo
+            // 
+            this.cbUseItemNo.AutoSize = true;
+            this.cbUseItemNo.Checked = true;
+            this.cbUseItemNo.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUseItemNo.Location = new System.Drawing.Point(567, 6);
+            this.cbUseItemNo.Name = "cbUseItemNo";
+            this.cbUseItemNo.Size = new System.Drawing.Size(177, 21);
+            this.cbUseItemNo.TabIndex = 10;
+            this.cbUseItemNo.Text = "Lookup by Item Number";
+            this.cbUseItemNo.UseVisualStyleBackColor = true;
+            this.cbUseItemNo.CheckedChanged += new System.EventHandler(this.cbUseItemNo_CheckedChanged);
+            // 
+            // btnReturn
+            // 
+            this.btnReturn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.btnReturn.Location = new System.Drawing.Point(1311, 32);
+            this.btnReturn.Name = "btnReturn";
+            this.btnReturn.Size = new System.Drawing.Size(158, 41);
+            this.btnReturn.TabIndex = 11;
+            this.btnReturn.Text = "Return For Review";
+            this.btnReturn.UseVisualStyleBackColor = false;
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.Location = new System.Drawing.Point(439, 4);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(82, 26);
+            this.btnLogout.TabIndex = 12;
+            this.btnLogout.Text = "Sign Out";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
             // fmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1752, 752);
+            this.ClientSize = new System.Drawing.Size(1848, 752);
             this.Controls.Add(this.tbTabs);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -837,7 +898,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tbHours;
+        private System.Windows.Forms.TextBox tbRegHours;
         private System.Windows.Forms.Button btnAddHours;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnAddNote;
@@ -884,6 +945,11 @@
         private System.Windows.Forms.ColumnHeader OTTot;
         private System.Windows.Forms.ColumnHeader Total;
         private System.Windows.Forms.ColumnHeader ThurOT;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tbOTHours;
+        private System.Windows.Forms.CheckBox cbUseItemNo;
+        private System.Windows.Forms.Button btnReturn;
+        private System.Windows.Forms.Button btnLogout;
     }
 }
 

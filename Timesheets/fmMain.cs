@@ -23,6 +23,7 @@ namespace Timesheets
         bool showActiveCust = false;
         bool supCheckedAll = false;
         bool OMCheckedAll = false;
+        bool useItemNo = true;
 
         enum DayIndex
         {
@@ -46,17 +47,15 @@ namespace Timesheets
         {
             isLoading = true;
             fmLogin fLogin = new fmLogin();
-            if (!System.IO.File.Exists("user.txt"))
+            if (!System.IO.File.Exists(@"C:\PowerCranes\user.txt"))
                 DialogResult = fLogin.ShowDialog();
             lblWeekEnding.Text = CommonProcs.GetWeekEnding(DateTime.Now).ToShortDateString();
             dtpWeekEnding.Value = CommonProcs.GetWeekEnding(DateTime.Now);
-            userName = MyConfig.ReadValue("firstName") + " " + MyConfig.ReadValue("lastName");
             accessLevel = int.Parse(MyConfig.ReadValue("accessLevel"));
             branch = int.Parse(MyConfig.ReadValue("branch"));
-            Text = "Timesheet Entry";
-            lblStatus.Text = "Current user: " + userName + "  Current Branch: " + branch;
+            Text = "Timesheet Entry v." + Application.ProductVersion;
             cbBranch.SelectedIndex = branch + 1;
-
+            ShowCurrentUser();
             LoadBranchCombos();
 
             isLoading = false;
@@ -65,6 +64,13 @@ namespace Timesheets
             SetAccessFromAccessLevel(accessLevel);
             FillGridView(false);
         }
+
+        private void ShowCurrentUser()
+        {
+            userName = MyConfig.ReadValue("firstName") + " " + MyConfig.ReadValue("lastName");
+            lblStatus.Text = "Current user: " + userName + "  Current Branch: " + branch;
+        }
+
 
         private void SetAccessFromAccessLevel(int accessLevel)
         {
@@ -126,7 +132,8 @@ namespace Timesheets
         }
         private void cbBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadBranchCombos();
+            if (!isLoading)
+                LoadBranchCombos();
         }
 
 
@@ -137,14 +144,14 @@ namespace Timesheets
         }
         #endregion
         #region Combos
-        private void LoadBranchCombos()
+        private void LoadBranchCombos(bool useItemNo = false)
         {
             string companyStr = GetCurrentCompany();
             string branchStr = GetCurrentBranch();
-            LoadEmployeeCombo(companyStr, branchStr, showActive);
-            LoadCustomerCombo(companyStr, branchStr, showActiveCust);
-            LoadPayrollItemCombo(companyStr, branchStr);
-            LoadClassCombo(companyStr, branchStr);
+            LoadEmployeeCombo(companyStr, branchStr, showActive,useItemNo);
+            LoadCustomerCombo(companyStr, branchStr, showActiveCust, useItemNo);
+            LoadPayrollItemCombo(companyStr, branchStr, useItemNo);
+            LoadClassCombo(companyStr, branchStr, useItemNo);
             List<int> facIDs = LoadFacilityCombo(branchStr);
             LoadAreaCombo(facIDs);
         }
@@ -164,29 +171,29 @@ namespace Timesheets
             return CommonProcs.GetFacList(branchStr);
         }
 
-        private void LoadPayrollItemCombo(string companyStr, string branchStr)
+        private void LoadPayrollItemCombo(string companyStr, string branchStr, bool useItemNo)
         {
-            cbPayrollItem.DataSource = SelectListHelper.GetPayrollItemList(companyStr, branchStr);
+            cbPayrollItem.DataSource = SelectListHelper.GetPayrollItemList(companyStr, branchStr, useItemNo);
             cbPayrollItem.DisplayMember = "key";
             cbPayrollItem.ValueMember = "value";
         }
 
-        private void LoadCustomerCombo(string companyStr, string branchStr, bool showActive)
+        private void LoadCustomerCombo(string companyStr, string branchStr, bool showActive, bool useItemNo)
         {
-            cbCustomer.DataSource = SelectListHelper.GetCustomerList(companyStr, branchStr, showActive);
+            cbCustomer.DataSource = SelectListHelper.GetCustomerList(companyStr, branchStr, showActive, useItemNo);
             cbCustomer.DisplayMember = "key";
             cbCustomer.ValueMember = "value";
         }
 
-        private void LoadClassCombo(string companyStr, string branchStr)
+        private void LoadClassCombo(string companyStr, string branchStr,bool useItemNo)
         {
-            cbClassEquip.DataSource = SelectListHelper.GetClassCombo(companyStr, branchStr);
+            cbClassEquip.DataSource = SelectListHelper.GetClassCombo(companyStr, branchStr, useItemNo);
             cbClassEquip.DisplayMember = "key";
             cbClassEquip.ValueMember = "value";
         }
-        private void LoadEmployeeCombo(string companyStr, string branchStr, bool showActive = false)
+        private void LoadEmployeeCombo(string companyStr, string branchStr, bool showActive = false, bool useItemNo = false)
         {
-            cbEmployee.DataSource = SelectListHelper.GetEmployeeList(companyStr, branchStr, showActive);
+            cbEmployee.DataSource = SelectListHelper.GetEmployeeList(companyStr, branchStr, showActive, useItemNo);
             cbEmployee.DisplayMember = "key";
             cbEmployee.ValueMember = "value";
         }
@@ -233,39 +240,75 @@ namespace Timesheets
         #region Timesheet
         private void btnAddHours_Click(object sender, EventArgs e)
         {
-            TimeSheet ts = new TimeSheet();
-            ts.EmployeeID = int.Parse(cbEmployee.SelectedValue.ToString());
-            ts.CustomerID = int.Parse(cbCustomer.SelectedValue.ToString());
-            ts.ClassID = int.Parse(cbClassEquip.SelectedValue.ToString());
-            ts.PayrollItemID = int.Parse(cbPayrollItem.SelectedValue.ToString());
-
-            decimal hours = decimal.Parse(tbHours.Text);
-
-            if (((ComboBoxItem)cbPayrollItem.SelectedItem).key.Contains("RG"))
+            if (GetCurrentBranch() == "AA")
             {
-                ts.RegHours = hours;
-            }
-            if (((ComboBoxItem)cbPayrollItem.SelectedItem).key.Contains("OT"))
-            {
-                ts.OTHours = hours;
-            }
-            if (ts.OTHours < 0)
-            {
+                MessageBox.Show("Cannot add Timesheet items when selected branch is ShowAll");
                 return;
             }
-            ts.WorkDate = dtpDateWorked.Value;
-            ts.WeekEnding = dtpWeekEnding.Value;
-            ts.FacID = int.Parse(cbFac.SelectedValue.ToString());
-            ts.AreaID = int.Parse(cbArea.SelectedValue.ToString());
-            ts.Notes = noteText;
-            ts.SupApprove = false;
-            ts.OMApprove = false;
-            ts.HOApprove = false;
-            ts.TimesheetID = new ModelToSQL<TimeSheet>().WriteInsertSQL("Timesheet", ts, "TimesheetID", CommonProcs.WCompanyConnStr);
+            if (tbRegHours.Text != string.Empty)
+            {
+                TimeSheet ts = new TimeSheet();
+                ts.EmployeeID = int.Parse(cbEmployee.SelectedValue.ToString());
+                ts.CustomerID = int.Parse(cbCustomer.SelectedValue.ToString());
+                ts.ClassID = int.Parse(cbClassEquip.SelectedValue.ToString());
+                ts.RegHours = decimal.Parse(tbRegHours.Text);
+                ts.PayrollItemID = int.Parse(cbPayrollItem.SelectedValue.ToString());
+                ts.WorkDate = dtpDateWorked.Value;
+                ts.WeekEnding = dtpWeekEnding.Value;
+                ts.FacID = int.Parse(cbFac.SelectedValue.ToString());
+                ts.AreaID = int.Parse(cbArea.SelectedValue.ToString());
+                ts.Notes = noteText;
+                ts.SupApprove = false;
+                ts.OMApprove = false;
+                ts.HOApprove = false;
+                ts.TimesheetID = new ModelToSQL<TimeSheet>().WriteInsertSQL("Timesheet", ts, "TimesheetID", CommonProcs.WCompanyConnStr);
+            }
+            if (tbOTHours.Text != string.Empty)
+            {
+                TimeSheet ts = new TimeSheet();
+                ts.EmployeeID = int.Parse(cbEmployee.SelectedValue.ToString());
+                ts.CustomerID = int.Parse(cbCustomer.SelectedValue.ToString());
+                ts.ClassID = int.Parse(cbClassEquip.SelectedValue.ToString());
+
+                ts.OTHours = decimal.Parse(tbOTHours.Text);
+
+                ts.PayrollItemID = GetOTPayrollItem(cbPayrollItem.SelectedValue.ToString());
+
+                ts.WorkDate = dtpDateWorked.Value;
+                ts.WeekEnding = dtpWeekEnding.Value;
+                ts.FacID = int.Parse(cbFac.SelectedValue.ToString());
+                ts.AreaID = int.Parse(cbArea.SelectedValue.ToString());
+                ts.Notes = noteText;
+                ts.SupApprove = false;
+                ts.OMApprove = false;
+                ts.HOApprove = false;
+                ts.TimesheetID = new ModelToSQL<TimeSheet>().WriteInsertSQL("Timesheet", ts, "TimesheetID", CommonProcs.WCompanyConnStr);
+            }
+
             FillGridView(true);
             LoadAreaCombo(CommonProcs.GetFacList(GetCurrentBranch()));
             dtpDateWorked.Value = dtpDateWorked.Value.AddDays(1);
             dtpDateWorked.Focus();
+        }
+
+        private int GetOTPayrollItem(string RegHoursID)
+        {
+            using (clsDataGetter dg = new clsDataGetter(CommonProcs.WCompanyConnStr))
+            {
+                string branchStr = GetCurrentBranch();
+
+                string nameSQL = "SELECT name FROM PayrollItem ";
+                nameSQL += "WHERE payItemID=" + RegHoursID;
+                string itemName = dg.GetScalarString(nameSQL);
+                string[] nameParts = itemName.Split('-');
+                itemName = nameParts[0] + "-" + nameParts[1];
+
+                string IDSql = "SELECT payItemID FROM PayrollItem ";
+                IDSql += "WHERE Name LIKE '%" + itemName + "-OT' ";
+                IDSql += "AND WageType = 'HourlyOvertime' ";
+                IDSql += "AND QBFile='" + GetCurrentCompany() + "'";
+                return dg.GetScalarInteger(IDSql);
+            }
         }
 
         private void FillGridView(bool fillTimeGrid)
@@ -276,11 +319,16 @@ namespace Timesheets
             sql += "FROM TimesheetEntryGrid WHERE EmployeeID = " + cbEmployee.SelectedValue;
             List<TimesheetEntryGrid> gridRows = new ReaderToModel<TimesheetEntryGrid>().CreateList(sql, CommonProcs.WCompanyConnStr);
             gvTimesheet.DataSource = gridRows;
-            if (fillTimeGrid)
+            if (gridRows.Count > 0)
             {
-                lvTime.Items.Clear();
-                FillTimeGrid(gridRows);
+                if (fillTimeGrid)
+                {
+                    lvTime.Items.Clear();
+                    FillTimeGrid(gridRows);
+                }
             }
+            if (tbTabs.SelectedIndex == 1)
+                FillTotalsView();
         }
 
         private void FillTimeGrid(List<TimesheetEntryGrid> gridRows)
@@ -567,13 +615,13 @@ namespace Timesheets
             if (showActiveCust)
             {
                 btnShowActiveCust.Text = "Show Active";
-                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), false);
+                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), false,useItemNo);
                 showActiveCust = false;
             }
             else
             {
                 btnShowActiveCust.Text = "Show All";
-                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), true);
+                LoadCustomerCombo(GetCurrentCompany(), GetCurrentBranch(), true, useItemNo);
                 showActiveCust = true;
             }
         }
@@ -608,15 +656,18 @@ namespace Timesheets
 
         private void tbHours_Enter(object sender, EventArgs e)
         {
-            tbHours.Text = "";
+            tbRegHours.Text = "";
         }
         #endregion
         #region Recap
         private void FillTotalsView()
         {
             gvRecap.Columns.Clear();
+            string branchStr = GetCurrentBranch();
             string sql = "SELECT EmployeeID,EmpName,WeekEnding,RegHours,OTHours ";
             sql += "FROM TimesheetTotals WHERE WeekEnding = '" + dtpWeekEnding.Value.ToShortDateString() + "'";
+            if (branchStr != "AA")
+                sql += "AND branch = '" + branchStr.Trim() + "' ";
             List<TimesheetTotals> totals = new ReaderToModel<TimesheetTotals>().CreateList(sql, CommonProcs.WCompanyConnStr);
             foreach (var tot in totals)
             {
@@ -900,6 +951,24 @@ namespace Timesheets
         {
             if (gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == null)
                 gvTimesheet.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "0.0";
+        }
+
+        private void cbUseItemNo_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbUseItemNo.Checked)
+                useItemNo = true;
+            else
+                useItemNo = false;
+            LoadBranchCombos(useItemNo);
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(@"C:\PowerCranes\user.txt"))
+                System.IO.File.Delete(@"C:\PowerCranes\user.txt");
+            fmLogin fLog = new fmLogin();
+            fLog.ShowDialog();
+            ShowCurrentUser();
         }
     }
 }
